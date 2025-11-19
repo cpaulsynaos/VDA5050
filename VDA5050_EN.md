@@ -50,65 +50,64 @@ Version 3.0.0
 [1 Foreword](#1-foreword)<br>
 [2 Objective of the document](#2-objective-of-the-document)<br>
 [3 Scope](#3-scope)<br>
-[3.1 Other applicable documents](#31-other-applicable-documents)<br>
+  [3.1 Other applicable documents](#31-other-applicable-documents)<br>
 [4 Requirements and protocol definition](#4-requirements-and-protocol-definition)<br>
 [5 Process and content of communication](#5-process-and-content-of-communication)<br>
 [6 Protocol specification](#6-protocol-specification)<br>
-[6.1 Symbols of the tables and meaning of formatting](#61-symbols-of-the-tables-and-meaning-of-formatting)<br>
-[6.1.1 Optional fields](#611-optional-fields)<br>
-[6.1.2 Permitted characters and field lengths](#612-permitted-characters-and-field-lengths)<br>
-[6.1.3 Notation of fields, topics and enumerations](#613-notation-of-fields-topics-and-enumerations) <br>
-[6.1.4 JSON data types](#614-json-data-types)<br>
-[6.2 MQTT connection handling, security and QoS](#62-mqtt-connection-handling-security-and-qos)<br>
-[6.3 MQTT topic levels](#63-mqtt-topic-levels)<br>
-[6.4 Protocol header](#64-protocol-header)<br>
-[6.5 Topics for communication](#65-topics-for-communication)<br>
-[6.6 Topic: "order" (from master control to AGV)](#66-topic-order-from-master-control-to-agv)<br>
-[6.6.1 Concept and logic](#661-concept-and-logic)<br>
-[6.6.2 Orders and order updates](#662-orders-and-order-update)<br>
-[6.6.3 Order cancellation (by master control)](#663-order-cancellation-by-master-control)<br>
-[6.6.4 Order rejection](#664-order-rejection)<br>
-[6.6.5 Corridors](#665-corridors)<br>
-[6.6.6 Implementation of the order message](#666-implementation-of-the-order-message)<br>
-[6.7 Maps](#67-maps)<br>
-[6.7.1 Map distribution](#671-map-distribution)<br>
-[6.7.2 Maps in vehicle state](#672-maps-in-the-vehicle-state)<br>
-[6.7.3 Map download](#673-map-download)<br>
-[6.7.4 Enable downloaded maps](#674-enable-downloaded-maps)<br>
-[6.7.5 Delete maps on vehicle](#675-delete-maps-on-vehicle)<br>
-[6.8 Sharing of planned path for freely-navigating mobile robots](#68-sharing-of-planned-path-for-freely-navigating-mobile-robots)<br>
-[6.9 Zones](#69-zones)<br>
-[6.9.1 Zone types](#691-zone-types)<br>
-[6.9.2 Implementation of the zone set transfer](#692-implementation-of-the-zone-set-transfer)<br>
-[6.9.3 Communication for interactive zones](#693-communication-for-interactive-zones)<br>
-[6.9.4 Interaction between zones](#694-interactions-between-zones)<br>
-[6.9.4 Error handling within zones](#695-error-handling-within-zones)<br>
-[6.10 Actions](#610-actions)<br>
-[6.10.1 Definition, parameters, effects and scope of predefined actions](#6101-definition-parameters-effects-and-scope-of-predefined-actions)<br>
-[6.10.2 States of predefined actions](#6102-states-of-predefined-actions)<br>
-[6.11 Topic: "instantActions" (from master control to AGV)](#611-topic-instantactions-from-master-control-to-agv)<br>
-[6.12 Topic: "state" (from AGV to master control)](#612-topic-state-from-agv-to-master-control)<br>
-[6.12.1 Concept and logic](#6121-concept-and-logic)<br>
-[6.12.2 Traversal of nodes and entering/leaving edges, triggering of actions](#6122-traversal-of-nodes-and-enteringleaving-edges-triggering-of-actions)<br>
-[6.12.3 Base request](#6123-base-request)<br>
-[6.12.4 Obstacle avoidance request](#6124-obstacle-avoidance-request)<br>
-[6.12.4 Information](#6124-information)<br>
-[6.12.5 Errors](#6125-errors)<br>
-[6.12.6 Operating Mode](#6126-operating-mode)<br>
-[6.12.7 Implementation of the state message](#6127-implementation-of-the-state-message)<br>
-[6.13 actionStates](#613-action-states)<br>
-[6.14 Action blocking types and sequence](#614-action-blocking-types-and-sequence)<br>
-[6.15 Topic "visualization"](#615-topic-visualization)<br>
-[6.16 Topic "connection"](#616-topic-connection)<br>
-[6.17 Topic "response"](#616-response-connection)<br>
-
-[6.17 Topic "factsheet"](#617-topic-factsheet)<br>
-[6.17.1 Factsheet JSON structure](#6171-factsheet-json-structure)<br>
+  [6.1 Symbols of the tables and meaning of formatting](#61-symbols-of-the-tables-and-meaning-of-formatting)<br>
+    [6.1.1 Optional fields](#611-optional-fields)<br>
+    [6.1.2 Permitted characters and field lengths](#612-permitted-characters-and-field-lengths)<br>
+    [6.1.3 Notation of fields, topics and enumerations](#613-notation-of-fields-topics-and-enumerations) <br>
+    [6.1.4 JSON data types](#614-json-data-types)<br>
+  [6.2 MQTT connection handling, security and QoS](#62-mqtt-connection-handling-security-and-qos)<br>
+  [6.3 MQTT topic levels](#63-mqtt-topic-levels)<br>
+  [6.4 Protocol header](#64-protocol-header)<br>
+  [6.5 Topics for communication](#65-topics-for-communication)<br>
+  [6.6 Topic: "order" (from master control to AGV)](#66-topic-order-from-master-control-to-agv)<br>
+    [6.6.1 Concept and logic](#661-concept-and-logic)<br>
+    [6.6.2 Orders and order updates](#662-orders-and-order-update)<br>
+    [6.6.3 Order cancellation (by master control)](#663-order-cancellation-by-master-control)<br>
+    [6.6.4 Order rejection](#664-order-rejection)<br>
+    [6.6.5 Corridors](#665-corridors)<br>
+    [6.6.6 Implementation of the order message](#666-implementation-of-the-order-message)<br>
+  [6.7 Maps](#67-maps)<br>
+    [6.7.1 Map distribution](#671-map-distribution)<br>
+    [6.7.2 Maps in vehicle state](#672-maps-in-the-vehicle-state)<br>
+    [6.7.3 Map download](#673-map-download)<br>
+    [6.7.4 Enable downloaded maps](#674-enable-downloaded-maps)<br>
+    [6.7.5 Delete maps on vehicle](#675-delete-maps-on-vehicle)<br>
+  [6.8 Sharing of planned path for freely-navigating mobile robots](#68-sharing-of-planned-path-for-freely-navigating-mobile-robots)<br>
+  [6.9 Zones](#69-zones)<br>
+    [6.9.1 Zone types](#691-zone-types)<br>
+    [6.9.2 Implementation of the zone set transfer](#692-implementation-of-the-zone-set-transfer)<br>
+    [6.9.3 Communication for interactive zones](#693-communication-for-interactive-zones)<br>
+    [6.9.4 Interaction between zones](#694-interactions-between-zones)<br>
+    [6.9.4 Error handling within zones](#695-error-handling-within-zones)<br>
+  [6.10 Actions](#610-actions)<br>
+    [6.10.1 Definition, parameters, effects and scope of predefined actions](#6101-definition-parameters-effects-and-scope-of-predefined-actions)<br>
+    [6.10.2 States of predefined actions](#6102-states-of-predefined-actions)<br>
+    [6.11 Topic: "instantActions" (from master control to AGV)](#611-topic-instantactions-from-master-control-to-agv)<br>
+    [6.12 Topic: "state" (from AGV to master control)](#612-topic-state-from-agv-to-master-control)<br>
+    [6.12.1 Concept and logic](#6121-concept-and-logic)<br>
+    [6.12.2 Traversal of nodes and entering/leaving edges, triggering of actions](#6122-traversal-of-nodes-and-enteringleaving-edges-triggering-of-actions)<br>
+    [6.12.3 Base request](#6123-base-request)<br>
+    [6.12.4 Request use of Corridors](#6124-request-use-of-corridors)<br>
+    [6.12.4 Information](#6124-information)<br>
+    [6.12.5 Errors](#6125-errors)<br>
+    [6.12.6 Operating Mode](#6126-operating-mode)<br>
+    [6.12.7 Implementation of the state message](#6127-implementation-of-the-state-message)<br>
+  [6.13 actionStates](#613-action-states)<br>
+  [6.14 Action blocking types and sequence](#614-action-blocking-types-and-sequence)<br>
+  [6.15 Topic "visualization"](#615-topic-visualization)<br>
+  [6.16 Topic "connection"](#616-topic-connection)<br>
+  [6.17 Topic "response"](#617-topic-response)<br>
+  [6.18 Topic "factsheet"](#618-topic-factsheet)<br>
+    [6.18.1 Factsheet JSON structure](#6181-factsheet-json-structure)<br>
 [7 Best practice](#7-best-practice)<br>
-[7.1 Error reference](#71-error-reference)<br>
-[7.2 Format of parameters](#72-format-of-parameters)<br>
+  [7.1 Error reference](#71-error-reference)<br>
+  [7.2 Format of parameters](#72-format-of-parameters)<br>
 [8 Glossary](#8-glossary)<br>
-[8.1 Definition](#81-definition)<br>
+  [8.1 Definition](#81-definition)<br>
 
 
 # 1 Foreword
@@ -230,7 +229,7 @@ Routes can be one-way streets, restricted for certain vehicle groups (based on t
 - Route network configuration:
 Within the routes, stations for loading and unloading, battery charging stations, peripheral environments (gates, elevators, barriers), waiting positions, buffer stations, etc. are defined.
 - Vehicle configuration: The physical properties of an AGV (size, available load carrier mounts, etc.) are stored by the operator.
-The AGV shall communicate this information via the topic `factsheet` in a specific way that is defined in Section [6.17 Topic "Factsheet"](#617-topic-factsheet) of this document.
+The AGV shall communicate this information via the topic `factsheet` in a specific way that is defined in Section [6.18 Topic "Factsheet"](#618-topic-factsheet) of this document.
 
 The configuration of routes and the route network described above are not part of this document.
 They form the basis for enabling order control and driving course assignment by the master control based on this information and the transport requirements to be completed.
@@ -1250,7 +1249,7 @@ Events that trigger the transmission of the state message are:
 
 
 There should be an effort to curb the amount of communication.
-If two events correlate with each other (e.g., the receiving of a new order usually forces an update of the `nodeStates` and `edgeStates`; as does the driving over a node), it is sensible to trigger one state update instead of multiple. The minimum time between two consecutive state messages is defined by the factsheet ([6.17 Topic "factsheet"](#617-topic-factsheet) protocolLimits.timing.minStateInterval) . 
+If two events correlate with each other (e.g., the receiving of a new order usually forces an update of the `nodeStates` and `edgeStates`; as does the driving over a node), it is sensible to trigger one state update instead of multiple. The minimum time between two consecutive state messages is defined by the factsheet ([6.18 Topic "factsheet"](#618-topic-factsheet) protocolLimits.timing.minStateInterval) . 
 
 
 ### 6.12.1 Concept and logic
@@ -1294,7 +1293,7 @@ An exception to this rule is if the AGV shall pause on the node (because of a so
 
 If the AGV detects that its base is running short, it can set the `newBaseRequest` flag to "true" to attempt to prevent unnecessary braking.
 
-### 6.12.4 Request Use of Corridors
+### 6.12.4 Request use of Corridors
 
 If the corridors within a mobile robot's currently active order have the `releaseRequired` flag set to true, it shall issue a request prior to deviating from the predefined trajectory of an edge. For this purpose, the robot shall add an `edgeRequest` object to its state message. Note that the `requestId` shall be unique across all requests (e.g. `zoneRequest`, `edgeRequest`) issued by the mobile robot. Master control shall only release the corridor for edges that are part of the base.
 
@@ -1722,7 +1721,7 @@ Object structure/Identifier | Data type | Description
 
 Additionally, the master control has the option to add a `leaseExpiry` timestamp to the response. If the robot hasn't finished its request by the time of expiry, it must then execute the defined `releaseLossBehavior`. Feasible recovery strategies for loss of release are either the robot returning to the predefined trajectory of the edge along the path it took to deviate from it or stopping in its current position and awaiting manual intervention.
 
-## 6.17 Topic "factsheet"
+## 6.18 Topic "factsheet"
 
 The factsheet provides basic information about a specific AGV type series.
 This information allows comparison of different AGV types and can be applied for the planning, dimensioning, and simulation of an AGV system.
@@ -1737,7 +1736,7 @@ The master control can request the factsheet from the AGV by sending the instant
 All messages on this topic shall be sent with a retained flag.
 
 
-### 6.17.1 Factsheet JSON structure
+### 6.18.1 Factsheet JSON structure
 The factsheet consists of the JSON objects listed in the following table.
 
 | **Field** | **data type** | **description** |
