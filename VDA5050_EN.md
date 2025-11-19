@@ -53,14 +53,15 @@ Version 3.0.0
   [3.1 Other applicable documents](#31-other-applicable-documents)<br>
 [4 Requirements and protocol definition](#4-requirements-and-protocol-definition)<br>
 [5 Process and content of communication](#5-process-and-content-of-communication)<br>
+[6 MQTT](#6-mqtt)<br>
+  [6.1 Connection handling, security and QoS](#61-connection-handling-security-and-qos)<br>
+  [6.2 Topic levels](#62-topic-levels)<br>
 [6 Protocol specification](#6-protocol-specification)<br>
   [6.1 Symbols of the tables and meaning of formatting](#61-symbols-of-the-tables-and-meaning-of-formatting)<br>
     [6.1.1 Optional fields](#611-optional-fields)<br>
     [6.1.2 Permitted characters and field lengths](#612-permitted-characters-and-field-lengths)<br>
     [6.1.3 Notation of fields, topics and enumerations](#613-notation-of-fields-topics-and-enumerations) <br>
     [6.1.4 JSON data types](#614-json-data-types)<br>
-  [6.2 MQTT connection handling, security and QoS](#62-mqtt-connection-handling-security-and-qos)<br>
-  [6.3 MQTT topic levels](#63-mqtt-topic-levels)<br>
   [6.4 Protocol header](#64-protocol-header)<br>
   [6.5 Topics for communication](#65-topics-for-communication)<br>
   [6.6 Topic: "order" (from master control to AGV)](#66-topic-order-from-master-control-to-agv)<br>
@@ -261,6 +262,51 @@ In addition, the integrator shall take into account the following when configuri
 - Pivot point: The use of different points of the AGV or points of charge as a pivot point leads to different envelopes of the vehicle. The reference point may vary depending on the situation, e.g., it may be different for an AGV carrying a load and for an AGV that does not carry a load.
 
 
+# 6 MQTT
+
+MQTT is an ISO standard (ISO/IEC PRF 20922) publish–subscribe-based messaging protocol and used to exchange all VDA 5050 messages.
+
+## 6.1 Connection handling, security and QoS
+
+The MQTT protocol provides the option of setting a last will message for a client.
+If the client disconnects unexpectedly for any reason, the last will is distributed by the broker to other subscribed clients.
+The use of this feature is described in Section [6.16 Topic "connection"](#616-topic-connection).
+
+If the AGV disconnects from the broker, it keeps all the order information and fulfills the order up to the last released node.
+
+Protocol security needs to be taken into account by broker configuration.
+
+To reduce the communication overhead, the MQTT QoS level 0 (Best Effort) is to be used for the topics `order`, `instantActions`, `state`, `factsheet`, `zoneSet`, `response` and `visualization`.
+The topic `connection` shall use the QoS level 1 (At Least Once).
+
+
+## 6.2 Topic levels
+
+The MQTT topic structure is not strictly defined due to the mandatory topic structure of cloud providers.
+For a cloud-based MQTT broker the topic structure has to be adapted individually to match the topics defined in this protocol.
+This means that the topic names defined in the following sections are mandatory.
+
+For a local broker the MQTT topic levels are suggested as followed:
+
+**interfaceName/majorVersion/manufacturer/serialNumber/topic**
+
+Example:
+```
+uagv/v2/KIT/0001/order
+```
+
+MQTT Topic Level | Data type | Description
+---|---|---
+interfaceName | string | Name of the used interface
+majorVersion | string | Major version number of the VDA 5050 recommendation, preceded by "v"
+manufacturer | string | Manufacturer of the AGV.
+serialNumber | string | Unique AGV serial number consisting of the following characters: <br>A-Z <br>a-z <br>0-9 <br>_ <br>. <br>: <br>-
+topic | string | Topic (e.g., order or state) see Section [6.5 Topics for Communication](#65-topics-for-communication)
+
+Note: Since the `/` character is used to define topic hierarchies, it shall not be used in any of the aforementioned fields.
+The `$` character is also used in some MQTT brokers for special internal topics, so it should not be used either.
+
+
 # 6 Protocol specification
 
 The following section describes the details of the communication protocol.
@@ -331,46 +377,6 @@ Where possible, JSON data types shall be used.
 A Boolean value is thus encoded by "true" or "false", not with an enumeration ('TRUE', 'FALSE') or magic numbers.
 Numerical data types are specified with type and precision, e.g., float64 or uint32. Special number values from the IEEE 754 like NaN and infinity are not supported.
 
-
-## 6.2 MQTT connection handling, security and QoS
-
-The MQTT protocol provides the option of setting a last will message for a client.
-If the client disconnects unexpectedly for any reason, the last will is distributed by the broker to other subscribed clients.
-The use of this feature is described in Section [6.16 Topic "connection"](#616-topic-connection).
-
-If the AGV disconnects from the broker, it keeps all the order information and fulfills the order up to the last released node.
-
-Protocol security needs to be taken into account by broker configuration.
-
-To reduce the communication overhead, the MQTT QoS level 0 (Best Effort) is to be used for the topics `order`, `instantActions`, `state`, `factsheet`, `zoneSet`, `response` and `visualization`.
-The topic `connection` shall use the QoS level 1 (At Least Once).
-
-
-## 6.3 MQTT topic levels
-
-The MQTT topic structure is not strictly defined due to the mandatory topic structure of cloud providers.
-For a cloud-based MQTT broker the topic structure has to be adapted individually to match the topics defined in this protocol.
-This means that the topic names defined in the following sections are mandatory.
-
-For a local broker the MQTT topic levels are suggested as followed:
-
-**interfaceName/majorVersion/manufacturer/serialNumber/topic**
-
-Example:
-```
-uagv/v2/KIT/0001/order
-```
-
-MQTT Topic Level | Data type | Description
----|---|---
-interfaceName | string | Name of the used interface
-majorVersion | string | Major version number of the VDA 5050 recommendation, preceded by "v"
-manufacturer | string | Manufacturer of the AGV.
-serialNumber | string | Unique AGV serial number consisting of the following characters: <br>A-Z <br>a-z <br>0-9 <br>_ <br>. <br>: <br>-
-topic | string | Topic (e.g., order or state) see Section [6.5 Topics for Communication](#65-topics-for-communication)
-
-Note: Since the `/` character is used to define topic hierarchies, it shall not be used in any of the aforementioned fields.
-The `$` character is also used in some MQTT brokers for special internal topics, so it should not be used either.
 
 
 ## 6.4 Protocol header
