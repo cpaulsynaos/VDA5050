@@ -107,8 +107,6 @@ Version 3.0.0
 [7 Best practice](#7-best-practice)<br>
   [7.1 Error reference](#71-error-reference)<br>
   [7.2 Format of parameters](#72-format-of-parameters)<br>
-[8 Glossary](#8-glossary)<br>
-  [8.1 Definition](#81-definition)<br>
 
 
 # 1 Foreword
