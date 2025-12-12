@@ -66,8 +66,7 @@ Version 3.0.0
     [6.1.3 Idle state of the mobile robot](#613-idle-state-of-the-mobile-robot)<br>
     [6.1.4 Order cancellation (by master control)](#614-order-cancellation-by-master-control)<br>
     [6.1.5 Order rejection](#615-order-rejection)<br>
-    [6.1.6 Clearing the order](#616-clearing-the-order)<br>
-    [6.1.7 Corridors](#617-corridors)<br>
+    [6.1.6 Corridors](#616-corridors)<br>
   [6.2 Maps](#62-maps)<br>
     [6.2.1 Map distribution](#621-map-distribution)<br>
     [6.2.2 Maps in vehicle state](#622-maps-in-the-vehicle-state)<br>
@@ -88,12 +87,13 @@ Version 3.0.0
     [6.5.1 Concept and logic](#651-concept-and-logic)<br>
     [6.5.2 Traversal of nodes and entering/leaving edges, triggering of actions](#652-traversal-of-nodes-and-enteringleaving-edges-triggering-of-actions)<br>
     [6.5.3 Base request](#653-base-request)<br>
-    [6.5.4 Request use of Corridors](#654-request-use-of-corridors)<br>
-    [6.5.5 Information](#655-information)<br>
-    [6.5.6 Errors](#656-errors)<br>
-    [6.5.7 Operating Mode](#657-operating-mode)<br>
+    [6.5.4 Information](#654-information)<br>
+    [6.5.5 Errors](#655-errors)<br>
+    [6.5.6 Operating Mode](#656-operating-mode)<br>
+	[6.5.7 Clearing the order](#657-clearing-the-order)<br>
     [6.5.8 Action states](#658-action-states)<br>
     [6.5.9 Reporting of horizon actions in the mobile robot's state](#659-reporting-of-horizon-actions-in-the-mobile-robots-state)<br>
+    [6.5.10 Request use of Corridors](#6510-request-use-of-corridors)<br>
   [6.6 Sharing of planned path for freely-navigating mobile robots](#66-sharing-of-planned-path-for-freely-navigating-mobile-robots)<br>
   [6.7 Visualization](#67-visualization)<br>
   [6.8 Connection](#68-connection)<br>
@@ -585,26 +585,8 @@ Resolution:
 If the AGV receives an order with the same `orderId` and `orderUpdateId` twice, the second order will be ignored. 
 This might happen, if the master control resends the order because the state message was received too late by master control and it could therefore not verify that the first order had been received.
 
-#### 6.1.6 Clearing the order
 
-In response to one of the following events, not triggered by Master Control, the vehicle has to stop executing the current order:
-
-- The vehicle is changing the operating mode to 'MANUAL', 'STARTUP', 'SERVICE' or 'TEACH_IN' (see also [6.12.6 Operating Mode](#6126-operating_mode)).
-- The vehicle cannot determine its position anymore.
-
-In these cases the vehicle has to clear any current order which means that similar to a cancellation:
-
-- Any scheduled order related action shall be cancelled and be reported as 'FAILED' in `actionStates`.
-- Any running order related action should also be cancelled and be reported as 'FAILED' in `actionStates`.
-- Any running order related action that cannot be interrupted shall be reflected by reporting 'RUNNING' as long as it is running, and afterwards be reported by the respective state ('FINISHED', if successful and 'FAILED', if not).
-- `orderId` and `orderUpdateId` are kept.
-- `nodeStates` and `edgeStates` are emptied.
-- Any requests shall be removed from the state.
-
-As long as the actions of an order are not in state 'FINISHED' or 'FAILED' the vehicle shall not report operating mode 'MANUAL', 'STARTUP', 'SERVICE' or 'TEACH_IN'. `nodesStates` and `edgeStates` shall not be emptied before the operating mode 'MANUAL', 'STARTUP', 'SERVICE' or 'TEACH_IN' is reported.
-
-
-### 6.1.7 Corridors
+### 6.1.6 Corridors
 
 The optional `corridor` edge attribute allows the vehicle to deviate from the edge trajectory for obstacle avoidance and defines the boundaries within which the vehicle is allowed to operate.
 To use the `corridor` attribute, a predefined trajectory is required that the vehicle would follow if no `corridor` attribute was defined. This can be either the trajectory defined on the vehicle known to the master control or the trajectory sent in an order. The behavior of a vehicle using the `corridor` attribute is still the behavior of a line-guided vehicle, except that it's allowed to temporarily deviate from a trajectory to avoid obstacles. Note that a corridor communicated within an order is released for the mobile robot by default. If the releaseRequired flag is set to true, the robot must request approval from master control before using the corridor as described in chapter [6.12.4 Requesting obstacle avoidance](#6124-obstacle-avoidance-request).
@@ -1053,19 +1035,7 @@ An exception to this rule is if the AGV shall pause on the node (because of a so
 If the AGV detects that its base is running short, it can set the `newBaseRequest` flag to "true" to attempt to prevent unnecessary braking.
 
 
-### 6.5.4 Request Use of Corridors
-
-If the corridors within a mobile robot's currently active order have the `releaseRequired` flag set to true, it shall issue a request prior to deviating from the predefined trajectory of an edge. For this purpose, the robot shall add an `edgeRequest` object to its state message. Note that the `requestId` shall be unique across all requests (e.g. `zoneRequest`, `edgeRequest`) issued by the mobile robot. Master control shall only release the corridor for edges that are part of the base.
-
-The `requestStatus` is set to REQUESTED and the combination of `edgeId` and `sequenceId` references the edge's trajectory the robot asks to deviate from. The mobile robot has the option to request the approval for several edges simulatenously as long as they are part of its current base. The usage of each corridor shall be requested in a dedicated `edgeRequest` and each request must be approved inidivdually by master control. 
-
-
-The robot shall remain on the predefined trajectory of its current edge until a `respone` is received from the master control. Once the robot has received the approval to start maneuvering, it sets the `requestStatus` to 'GRANTED' and may now use the corridor. As long as the robot requires the corridor, it shall keep the `edgeRequest` in its state. If the mobile robot no longer requires the use of a corridor (e.g., because it might have successfully completed its avoidance procedure, no more need to avoid an obstacle, etc.), it indicates this to the master control by removing the corresponding `edgeRequest` object from its state. From there on, the mobile robot shall act as a line-guided vehicle again. If it wishes to deviate from the predefined trajectory once more, it shall issue a new `edgeRequest`. 
-
-If during the avoidance procedure the robot reaches the end of its current edge's `corridor` and wishes to continue to the upcoming corridor, which is not yet released, it must stop at the border of its current `corridor`, send a dedicated edge request, and await its approval through the master control. If the robot's approval expires or the master control revokes a granted request, it must initiate the fallback action predefined in the `releaseLossBehavior` of the corridor of the edge.
-
-
-### 6.5.5 Information
+### 6.5.4 Information
 
 The AGV can submit arbitrary additional information to the master control via the `information` array.
 It is up to the AGV to decide how long it reports information via an information message.
@@ -1073,7 +1043,7 @@ It is up to the AGV to decide how long it reports information via an information
 The master control shall not use the info messages for logic; they shall only be used for visualization and debugging purposes.
 
 
-### 6.5.6 Errors
+### 6.5.5 Errors
 
 The mobile robot reports issues that it wants to inform the operator about via the `errors` array.
 The issues can have four levels: 'WARNING', 'URGENT', 'CRITICAL', and 'FATAL'.
@@ -1086,7 +1056,7 @@ The issues can have four levels: 'WARNING', 'URGENT', 'CRITICAL', and 'FATAL'.
 The mobile robot can add references that help with finding the cause of the error via the `errorReferences` array as well as `errorHints` to propose a possible resolution. Regardless of the level of the issue, the mobile robot shall never clear its order due to it.
 
 
-### 6.5.7 Operating Mode
+### 6.5.6 Operating Mode
 
 For regular order execution, master control must be in full control of the mobile robot. There are however situations where this is not possible, e.g., when manual human interaction on the mobile robot is required. The mobile robot shall report this using the field `operatingMode`.
 
@@ -1114,7 +1084,26 @@ SERVICE | NO | YES | YES | YES | YES | NO | NO
 TEACH_IN | NO | YES | YES | YES | YES | NO | NO
 
 
-## 6.5.8 Action states
+#### 6.5.7 Clearing the order
+
+In response to one of the following events, not triggered by Master Control, the vehicle has to stop executing the current order:
+
+- The vehicle is changing the operating mode to 'MANUAL', 'STARTUP', 'SERVICE' or 'TEACH_IN' (see also [6.12.6 Operating Mode](#6126-operating_mode)).
+- The vehicle cannot determine its position anymore.
+
+In these cases the vehicle has to clear any current order which means that similar to a cancellation:
+
+- Any scheduled order related action shall be cancelled and be reported as 'FAILED' in `actionStates`.
+- Any running order related action should also be cancelled and be reported as 'FAILED' in `actionStates`.
+- Any running order related action that cannot be interrupted shall be reflected by reporting 'RUNNING' as long as it is running, and afterwards be reported by the respective state ('FINISHED', if successful and 'FAILED', if not).
+- `orderId` and `orderUpdateId` are kept.
+- `nodeStates` and `edgeStates` are emptied.
+- Any requests shall be removed from the state.
+
+As long as the actions of an order are not in state 'FINISHED' or 'FAILED' the vehicle shall not report operating mode 'MANUAL', 'STARTUP', 'SERVICE' or 'TEACH_IN'. `nodesStates` and `edgeStates` shall not be emptied before the operating mode 'MANUAL', 'STARTUP', 'SERVICE' or 'TEACH_IN' is reported.
+
+
+### 6.5.8 Action states
 
 When an AGV receives an order related `action` (attached to a `node` or `edge` of an order), it shall report this `action` with an `actionState` in its `actionStates` array.
 When an AGV receives an `instantAction`, it shall report this `action` with an `actionState` in its `instantActionStates` array.
@@ -1155,6 +1144,18 @@ All possible action state transitions are visualized in Figure 16 and examples a
 ### 6.5.9 Reporting of horizon actions in the mobile robot's state
 
 The mobile robot's state shall always represent the full status of the order it currently has. Therefore, the robot shall report both the `actionsStates` of actions included in its base as well as horizon at all times. All horizon actions are reported as 'WAITING'. If the mobile robot receives an order update where part of its former horizon is removed or changed, all actions that were attached to these nodes and edges shall be removed from the `actionStates` to reflect this. `actionStates` of base actions shall never be removed in the context of an `orderUpdate` as the base cannot be modified once released.
+
+
+### 6.5.10 Request Use of Corridors
+
+If the corridors within a mobile robot's currently active order have the `releaseRequired` flag set to true, it shall issue a request prior to deviating from the predefined trajectory of an edge. For this purpose, the robot shall add an `edgeRequest` object to its state message. Note that the `requestId` shall be unique across all requests (e.g. `zoneRequest`, `edgeRequest`) issued by the mobile robot. Master control shall only release the corridor for edges that are part of the base.
+
+The `requestStatus` is set to REQUESTED and the combination of `edgeId` and `sequenceId` references the edge's trajectory the robot asks to deviate from. The mobile robot has the option to request the approval for several edges simulatenously as long as they are part of its current base. The usage of each corridor shall be requested in a dedicated `edgeRequest` and each request must be approved inidivdually by master control. 
+
+
+The robot shall remain on the predefined trajectory of its current edge until a `respone` is received from the master control. Once the robot has received the approval to start maneuvering, it sets the `requestStatus` to 'GRANTED' and may now use the corridor. As long as the robot requires the corridor, it shall keep the `edgeRequest` in its state. If the mobile robot no longer requires the use of a corridor (e.g., because it might have successfully completed its avoidance procedure, no more need to avoid an obstacle, etc.), it indicates this to the master control by removing the corresponding `edgeRequest` object from its state. From there on, the mobile robot shall act as a line-guided vehicle again. If it wishes to deviate from the predefined trajectory once more, it shall issue a new `edgeRequest`. 
+
+If during the avoidance procedure the robot reaches the end of its current edge's `corridor` and wishes to continue to the upcoming corridor, which is not yet released, it must stop at the border of its current `corridor`, send a dedicated edge request, and await its approval through the master control. If the robot's approval expires or the master control revokes a granted request, it must initiate the fallback action predefined in the `releaseLossBehavior` of the corridor of the edge.
 
 
 ## 6.6 Sharing of planned path for freely navigating mobile robots
