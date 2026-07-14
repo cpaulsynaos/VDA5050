@@ -27,7 +27,7 @@
             "type": "string",
             "description": "Version of the protocol [Major].[Minor].[Patch]",
             "examples": [
-                "1.3.2"
+                "3.0.1"
             ]
         },
         "manufacturer": {
