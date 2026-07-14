@@ -156,8 +156,8 @@
                                 "type": "number",
                                 "description": "Absolute orientation of the mobile robot in the project-specific coordinate system.",
                                 "unit": "rad",
-                                "minimum": -3.14159265359,
-                                "maximum": 3.14159265359
+                                "minimum": -3.1416,
+                                "maximum": 3.1416
                             },
                             "eta": {
                                 "type": "string",
@@ -190,8 +190,8 @@
                 "theta": {
                     "type": "number",
                     "unit": "rad",
-                    "minimum": -3.14159265359,
-                    "maximum": 3.14159265359
+                    "minimum": -3.1416,
+                    "maximum": 3.1416
                 },
                 "mapId": {
                     "type": "string",
