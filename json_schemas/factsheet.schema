@@ -911,10 +911,10 @@
                             "maximum": 100.0
                         },
                         "minimumChargingTime": {
-                            "type": "number",
+                            "type": "integer",
                             "description": "Specifies the desired minimum charging time in seconds.",
                             "unit": "s",
-							"minimum": 0.0
+							"minimum": 0
                         }
                     }
                 }
