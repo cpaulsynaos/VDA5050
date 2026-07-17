@@ -785,7 +785,7 @@
                             },
                             "maximumSpeed": {
                                 "type": "number",
-                                "unit": "m/s^2",
+                                "unit": "m/s",
                                 "description": "Maximum allowed speed for this load-type and –weight",
 								"minimum": 0.0
                             },
