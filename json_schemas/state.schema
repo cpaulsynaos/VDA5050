@@ -362,7 +362,7 @@
 		},
 		"trajectory": {
             "type": "object",
-            "description": "The trajectory is to be communicated as a NURBS and is defined in chapter 6.7 Implementation of the Order message. Trajectory segments reach from the point, where the mobile robot starts to enter the edge to the point where it reports that the next node was traversed.",
+            "description": "The trajectory is to be communicated as a NURBS and is defined in chapter 7.3 Implementation of the Order message. Trajectory segments reach from the point, where the mobile robot starts to enter the edge to the point where it reports that the next node was traversed.",
             "required": [
                 "controlPoints"
             ],
