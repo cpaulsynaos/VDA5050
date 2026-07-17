@@ -121,6 +121,10 @@
                                 }
                             }
                         }
+                    },
+                    "retriable": {
+                        "type": "boolean",
+                        "description": "True: action can enter RETRIABLE state if it fails. False: action enters FAILED state directly after it fails. Default: false."
                     }
                 }
             }
