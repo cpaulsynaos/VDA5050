@@ -171,7 +171,7 @@
 		},
 		"mobileRobotPosition": {
 			"type": "object",
-            "description": "Defines the position on a map in world coordinates. Each floor has its own map.",
+            "description": "Current position of the mobile robot on the map.",
             "required": [
                 "x",
                 "y",
