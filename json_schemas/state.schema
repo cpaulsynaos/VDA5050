@@ -737,7 +737,7 @@
                     "description": "Battery current in Ampere (A)"
                 },
                 "batteryHealth": {
-                    "type": "number",
+                    "type": "integer",
                     "description": "State of health in percent.",
                     "minimum":0,
                     "maximum":100
@@ -747,7 +747,7 @@
                     "description": "True: charging in progress. False: mobile robot is currently not charging."
                 },
                 "range": {
-                    "type": "number",
+                    "type": "integer",
                     "description": "Estimated reach with current State of Charge in meter.",
                     "minimum": 0
                 }
