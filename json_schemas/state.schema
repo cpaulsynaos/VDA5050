@@ -165,7 +165,7 @@
         },
         "actionStates": {
             "type": "array",
-            "description": "Array of the current actions and the actions which are yet to be finished. This may include actions from previous nodes that are still in progress\nWhen an action is completed, an updated state message is published with actionStatus set to finished and if applicable with the corresponding resultDescriptor. The actionStates are kept until a new order is received.",
+            "description": "Array of the current actions and the actions which are yet to be finished. This may include actions from previous nodes that are still in progress\nWhen an action is completed, an updated state message is published with actionStatus set to finished and if applicable with the corresponding actionDescription. The actionStates are kept until a new order is received.",
             "items": {
                 "$ref": "#/definitions/actionState"
             }
