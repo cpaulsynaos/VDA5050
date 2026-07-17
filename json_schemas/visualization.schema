@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "visualization",
-    "description": "Mobile robot position and/or velocity for visualization purposes. Can be published at a higher rate if wanted. Since bandwidth may be expensive depening on the update rate for this topic, all fields are optional.",
+    "description": "Mobile robot position and/or velocity for visualization purposes. Can be published at a higher rate if wanted.",
     "subtopic": "/visualization",
     "type": "object",
     "required": [
