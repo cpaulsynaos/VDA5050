@@ -442,7 +442,7 @@
                             },
                             "actionParameters": {
                                 "type": "array",
-                                "description": "Kist of parameters. if not defined, the action has no parameters",
+                                "description": "List of parameters. if not defined, the action has no parameters",
                                 "items": {
                                     "type": "object",
                                     "required": [
@@ -598,7 +598,7 @@
                             },
                             "vertices": {
                                 "type": "array",
-                                "description": "The envelope curve in defined as a polygon. It shall be assumed as closed. Only simple polygons shall be used.",
+                                "description": "The envelope curve is defined as a polygon. It shall be assumed as closed. Only simple polygons shall be used.",
                                 "items": {
                                     "type": "object",
                                     "required": [
