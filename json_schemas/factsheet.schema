@@ -667,7 +667,7 @@
             "properties": {
                 "loadPositions": {
                     "type": "array",
-                    "description": "List of load positions / load handling devices. This lists contains the valid values for the parameter “state.loads[].loadPosition” and for the action parameter “lhd” of the actions pick and drop. If this list doesn’t exist or is empty, the mobile robot has no load handling device.",
+                    "description": "List of load positions / load handling devices. This lists contains the valid values for the parameter “state.loads[].loadPosition” and for the action parameter “loadHandlingDevice” of the actions pick and drop. If this list doesn’t exist or is empty, the mobile robot has no load handling device.",
                     "items": {
                         "type": "string"
                     }
