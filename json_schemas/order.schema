@@ -60,18 +60,18 @@
             "description": "Array of nodes objects to be traversed for fulfilling the order. One node is enough for a valid order. Leave edge list empty for that case.",
             "type": "array",
             "items": {
-                "$ref": "#/definitions/node"
+                "$ref": "#/$defs/node"
             }
         },
         "edges": {
             "type": "array",
             "description": "Directional connection between two nodes. Array of edge objects to be traversed for fulfilling the order. One node is enough for a valid order. Leave edge list empty for that case.",
             "items": {
-                "$ref": "#/definitions/edge"
+                "$ref": "#/$defs/edge"
             }
         }
     },
-    "definitions": {
+    "$defs": {
 		"node": {
 			"type": "object",
 			"title": "node",
@@ -176,7 +176,7 @@
 					"description": "Array of actions to be executed on a node. Empty array, if no actions required.",
 					"type": "array",
 					"items": {
-						"$ref": "#/definitions/action"
+						"$ref": "#/$defs/action"
 					}
 				}
 			}
@@ -253,7 +253,7 @@
 				},
 				"trajectory": {
 					"description": "Trajectory JSON-object for this edge as a NURBS. Defines the curve, on which the mobile robot should move between the start node and the end node. Optional: Can be omitted, if mobile robot cannot process trajectories or if mobile robot plans its own trajectory.",
-					"$ref": "#/definitions/trajectory"
+					"$ref": "#/$defs/trajectory"
 				},
 				"length": {
 					"type": "number",
@@ -261,13 +261,13 @@
 					"unit": "m"
 				},
 				"corridor": {
-					"$ref": "#/definitions/corridor"
+					"$ref": "#/$defs/corridor"
 				},
 				"actions": {
 					"description": "Array of action objects with detailed information.",
 					"type": "array",
 					"items": {
-						"$ref": "#/definitions/action"
+						"$ref": "#/$defs/action"
 					}
 				}
 			}
