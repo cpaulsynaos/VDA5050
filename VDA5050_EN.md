@@ -1611,7 +1611,7 @@ Object structure/Identifier | Data type | Description
 | response <br> { | JSON object | Object which contains the fleet control's answer to a specific request. |
 | requestId | string | Unique per mobile robot identifier within all active requests. |
 | grantType | enum | Enum {'GRANTED','QUEUED','REVOKED','REJECTED'}<br>'GRANTED': The fleet control has granted the request. 'REVOKED': The fleet control revokes previously granted request. 'REJECTED': The Fleet control rejects a request. 'QUEUED': Acknowledge the mobile robot's request to the fleet control, but no permission is given yet. Request was added to some sort of a queue. |
-| *leaseExpiry* <br><br> } | string | Timestamp (ISO 8601, UTC); YYYY-MM-DDTHH:mm:ss.fffZ (e.g.“2017-04-15T11:40:03.123Z”). A timestamp for the release to expire shall only be sent with reponses granting a request.
+| *leaseExpiry* <br><br> } | string | Timestamp (ISO 8601, UTC); YYYY-MM-DDTHH:mm:ss.fffZ (e.g.“2017-04-15T11:40:03.123Z”). A timestamp for the release to expire shall only be sent with responses granting a request.
 
 
 ## 7.6 Implementation of the zoneSet message
