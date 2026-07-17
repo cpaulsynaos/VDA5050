@@ -209,7 +209,7 @@
                         },
                         "maximumTopicSerialLength": {
                             "type": "integer",
-                            "description": "Maximum length of serial-number part in MQTT-topics. Affected Parameters: order.serialNumber, instantActions.serialNumber, state.SerialNumber, visualization.serialNumber, connection.serialNumber, zoneSet.serialNumber, response.serialNumber",
+                            "description": "Maximum length of serial-number part in MQTT-topics. Affected Parameters: order.serialNumber, instantActions.serialNumber, state.serialNumber, visualization.serialNumber, connection.serialNumber, zoneSet.serialNumber, response.serialNumber",
 							"minimum": 0
                         },
                         "maximumTopicElementLength": {
