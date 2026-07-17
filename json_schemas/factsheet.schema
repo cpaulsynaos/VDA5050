@@ -209,17 +209,17 @@
                         },
                         "maximumTopicSerialLength": {
                             "type": "integer",
-                            "description": "Maximum length of serial-number part in MQTT-topics. Affected Parameters: order.serialNumber, instantActions.serialNumber, state.SerialNumber, visualization.serialNumber, connection.serialNumber",
+                            "description": "Maximum length of serial-number part in MQTT-topics. Affected Parameters: order.serialNumber, instantActions.serialNumber, state.SerialNumber, visualization.serialNumber, connection.serialNumber, zoneSet.serialNumber, response.serialNumber",
 							"minimum": 0
                         },
                         "maximumTopicElementLength": {
                             "type": "integer",
-                            "description": "Maximum length of all other parts in MQTT-topics. Affected parameters: order.timestamp, order.version, order.manufacturer, instantActions.timestamp, instantActions.version, instantActions.manufacturer, state.timestamp, state.version, state.manufacturer, visualization.timestamp, visualization.version, visualization.manufacturer, connection.timestamp, connection.version, connection.manufacturer",
+                            "description": "Maximum length of all other parts in MQTT-topics. Affected parameters: order.timestamp, order.version, order.manufacturer, instantActions.timestamp, instantActions.version, instantActions.manufacturer, state.timestamp, state.version, state.manufacturer, visualization.timestamp, visualization.version, visualization.manufacturer, connection.timestamp, connection.version, connection.manufacturer, zoneSet.timestamp, zoneSet.version, zoneSet.manufacturer, response.timestamp, response.version, response.manufacturer",
 							"minimum": 0
                         },
                         "maximumIdLength": {
                             "type": "integer",
-                            "description": "Maximum length of ID-Strings. Affected parameters: order.orderId, node.nodeId, nodePosition.mapId, action.actionId, edge.edgeId",
+                            "description": "Maximum length of ID-Strings. Affected parameters: order.orderId, node.nodeId, nodePosition.mapId, action.actionId, edge.edgeId, map.mapId, zoneSet.zoneSetId, zone.zoneId, zoneRequest.requestId, edgeRequest.requestId",
 							"minimum": 0
                         },
                         "idNumericalOnly": {
