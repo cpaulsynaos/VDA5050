@@ -1177,6 +1177,8 @@ Error Type | Error level | Description | Reference | Report duration
 'START_NODE_OUT_OF_RANGE' | 'WARNING' | Receival of an order with unreachable first node. | `orderId` | Until new order is accepted.
 'MOBILE_ROBOT_NOT_AVAILABLE' | 'WARNING' | Receival of an order while not in 'AUTOMATIC', 'SEMIAUTOMATIC' or 'INTERVENED' operating mode. | `orderId` | Until operating mode allows for new orders
 'UNKNOWN_MAP_ID' | 'WARNING' | Receival of an order containing nodes referencing an unknown `mapId`. | `orderId` | Until new order is accepted.
+'INSTANT_ACTION_STATES_FULL' | 'URGENT' | Array of `instantActionStates` is becoming too long to manage | - | Until instantActionStates are cleared by fleet control.
+ZONE_ACTION_STATES_FULL' | 'URGENT' | Array of `zoneActionStates` is becoming too long to manage | - | Until instantActionStates are cleared by fleet control.
 
 > Table 9 - Predefined error types
 
