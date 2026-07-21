@@ -953,7 +953,7 @@ The mobile robot shall acknowledge the fleet controls response by setting the `r
 The interaction between the mobile robot and the fleet control for 'RELEASE' zones shall be according to Figure 16.
 
 While the mobile robot remains in the 'RELEASE' zone, it keeps the `zoneRequest` object in its state and continues to report `requestStatus` as 'GRANTED' to inform fleet control that it is still inside the zone. After mobile robot has exited the zone, it shall remove the corresponding `zoneRequest` entry from its state message.
-When receiving a response with `grantType` 'REVOKED', the mobile robot shall remove the request from its state. When the `leaseExpiry` has passed, the requestStatus shall be set to 'EXPIRED' and the zone shall not be entered. If the mobile robot is already inside the 'RELEASE' zone when the `leaseExpiry` has passed or the request is 'REVOKED', it shall react according to the `releaseLossBehavior` defined in the zone definition.
+In case the zone has not yet been entered and a response with `grantType` 'REVOKED' is received, or the `leaseExpiry` has passed, the mobile robot shall remove the request from its state and the zone shall not be entered. If the mobile robot is already inside the 'RELEASE' zone when the `leaseExpiry` has passed or the request is 'REVOKED', it shall react according to the `releaseLossBehavior` defined in the zone definition, and keep the request in its state, set to 'REVOKED' or 'EXPIRED', accordingly, until the zone is left or a new release is granted.
 
 ![Figure 16 Zone request behavior for a RELEASE zone.](./assets/request_release_zone_access.png)
 >Figure 16 - Zone request behavior for a RELEASE zone.
@@ -961,7 +961,7 @@ When receiving a response with `grantType` 'REVOKED', the mobile robot shall rem
 The interaction between the mobile robot and the fleet control for 'COORDINATED_REPLANNING' zones shall be according to Figure 17.
 
 The mobile robot shall choose one of the trajectories of all 'GRANTED' requests to the zone and set the corresponding `requestStatus`to 'GRANTED' while removing all other requests from its state.
-When receiving a response with `grantType` 'REVOKED', the mobile robot shall remove the request from its state and not enter the 'COORDINATED_REPLANNING' zone. When the `leaseExpiry` has passed, the `requestStatus` shall be set to 'EXPIRED' and the zone shall not be entered. If the mobile robot is already inside the 'COORDINATED_REPLANNING' zone when the `leaseExpiry` has passed or the request is 'REVOKED', it shall stop driving and communicate this with an error of type 'RELEASE_LOST' and error level 'CRITICAL'. To continue, the mobile robot shall state a new request.
+In case the zone has not yet been entered and a response with `grantType` 'REVOKED' is received, the mobile robot shall remove the request from its state and not enter the 'COORDINATED_REPLANNING' zone. If the mobile robot is already inside the 'COORDINATED_REPLANNING' zone when the request is 'REVOKED', it shall stop driving and communicate this with an error of type 'RELEASE_LOST' and error level 'CRITICAL', and keep the request in its state, set to 'REVOKED', until the zone is left or a new release is granted. To continue, the mobile robot shall state a new request.
 
 ![Figure 17 Zone request behavior for a COORDINATED_REPLANNING zone.](./assets/request_coordinated_replanning_zone_replanning.png)
 >Figure 17 - Zone request behavior for a COORDINATED_REPLANNING zone.
@@ -1356,7 +1356,7 @@ If a request is answered with 'QUEUED', fleet control acknowledges reception of 
 If a request is answered with 'GRANTED', the mobile robot is allowed to perform the requested operation in accordance with the semantics of the request type. If a `leaseExpiry` is present, the permission shall only be considered valid until this time. Fleet control can extend a lease by sending an updated response with the same `requestId` and a new `leaseExpiry`.
 
 If a request is answered with 'REVOKED', or if the `leaseExpiry` is reached, the mobile robot shall act according to the `releaseLossBehavior` defined for the requested resource. 
-If the requested operation was already started, the mobile robot shall update the `requestStatus` accordingly ('REVOKED' or 'EXPIRED') and keep it in its state until the `releaseLossBehavior` is finished. If the requested operation was not started, the mobile robot shall remove the request from its state.
+If the requested operation was already started, the mobile robot shall update the `requestStatus` accordingly ('REVOKED' or 'EXPIRED') and keep it in its state until the `releaseLossBehavior` is finished. If the requested operation was not started, the mobile robot shall remove the request from its state immediately.
 
 If no response is received within the time frame required by the application, the mobile robot shall behave as if the request had not been granted and shall not perform the operation that requires explicit permission. The handling of timeouts and retries shall be defined during integration.
 
