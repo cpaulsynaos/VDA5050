@@ -1170,8 +1170,8 @@ Error Type | Error level | Description | Reference | Report duration
 'DUPLICATE_MAP' | 'WARNING' | Receival of a map with `mapId` and `mapVersion` already existing. | `mapId` and `mapVersion` of duplicate | Until a new map related instantAction was accepted.
 'BLOCKED_ZONE_VIOLATION' | 'CRITICAL' | Entering a 'BLOCKED' zone. | `zoneId` | Until the mobile robot is no longer violating the blocked zone.
 'DUPLICATE_ZONE_SET' | 'WARNING' | Receival of a zone set with `zoneSetId` already existing. | `zoneSetId` or `actionId` of `instantAction` | Reasonable amount of time for the fleet control to notice that the zone update failed.
-'RELEASE_LOSS_HANDLING' | 'WARNING' | Executing the release lost behavior after losing the release for a 'RELEASE' zone while within that zone. | `zoneId` | Until the mobile robot is no longer within the 'RELEASE' zone or is granted a the release again.
-'RELEASE_LOST' | 'CRITICAL' | Stopping within a zone due to losing the release for a 'RELEASE' or 'COORDINATED_REPLANNING' zone while the mobile robot is inside the zone. | `zoneId` | Until the mobile robot is no longer within the zone or is granted the release again.
+'RELEASE_LOSS_HANDLING' | 'WARNING' | Executing the 'EVACUATE' or 'CONTINUE' release loss behavior after losing the release for a 'RELEASE' zone while the mobile robot is inside the zone. | `zoneId` | Until the mobile robot has left the zone, is granted the release again, or the order has ended inside the zone.
+'RELEASE_LOST' | 'CRITICAL' | Stopping within a zone due to losing the release for a 'RELEASE' or 'COORDINATED_REPLANNING' zone while the mobile robot is inside the zone. | `zoneId` | Until the mobile robot has left the zone or is granted the release again.
 'ZONE_ACTION_CONFLICT' | 'CRITICAL' | Conflict between zone behavior and zone actions. | `zoneId` of 'ACTION' zone | Until the mobile robot is no longer violating the zone behavior.
 'NODE_UNREACHABLE'|'CRITICAL'| The mobile robot cannot reach a node in its order. | `nodeId` | Until new order is accepted.
 'LOCALIZATION_ERROR'|'FATAL'| The mobile robot is not localized. | | Until localization is regained.
