@@ -59,6 +59,7 @@
                     },
                     "leaseExpiry": {
                         "type": "string",
+                        "format": "date-time",
                         "description": "Timestamp (ISO 8601, UTC); YYYY-MM-DDTHH:mm:ss.fffZ (e.g., '2017-04-15T11:40:03.123Z')."
                     }
                 }

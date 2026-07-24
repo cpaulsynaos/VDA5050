@@ -225,7 +225,7 @@
 				},
 				"orientation": {
 					"type": "number",
-					"description": "Orientation of the mobile robot on the edge. The value orientationType defines if it has to be interpreted relative to the global project specific map coordinate system or tangential to the edge. In case of interpreted tangential to the edge 0.0 = forwards and PI = backwards. Example: orientation Pi/2 rad will lead to a rotation of 90 degrees. If mobile robot starts in different orientation, rotate the mobile robot on the edge to the desired orientation if rotationAllowed is set to True. If rotationAllowed is False, rotate before entering the edge. If that is not possible, reject the order. If no trajectory is defined, apply the rotation to the direct path between the two connecting nodes of the edge. If a trajectory is defined for the edge, apply the orientation to the trajectory.",
+					"description": "Orientation of the mobile robot on the trajectory of the edge. The value `orientationType` defines whether it shall be interpreted relative to the global project-specific map coordinate system or tangential to the trajectory of the edge. In case of tangential to the trajectory, 0.0 denotes driving forwards and PI denotes driving backwards.",
 					"unit": "rad",
 					"minimum": -3.1416,
 					"maximum": 3.1416
@@ -246,7 +246,7 @@
 					"type": "boolean",
 					"description": "True: Desired edge orientation shall be reached before entering the edge. False: Mobile robot can rotate into the desired orientation on the edge. Default: False."
 				},
-				"maxRotationSpeed": {
+				"maximumRotationSpeed": {
 					"type": "number",
 					"description": "Maximum rotation speed in rad/s. Optional: No limit, if not set.",
 					"unit": "rad/s"
@@ -315,7 +315,8 @@
 							},
 							"weight": {
 								"type": "number",
-								"description": "The weight, with which this control point pulls on the curve. When not defined, the default will be 1.0."
+								"description": "The weight, with which this control point pulls on the curve. When not defined, the default will be 1.0.",
+								"exclusiveMinimum": 0
 							}
 						}
 					}

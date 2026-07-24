@@ -80,7 +80,7 @@
         },
         "lastNodeSequenceId": {
             "type": "integer",
-            "description": "sequenceId of the last reached node or, if the mobile robot is currently on a node, sequenceId of current node. 0 if no lastNodeSequenceId is available."
+            "description": "Sequence ID of the last reached node or, if the mobile robot is currently on a node, Sequence ID of current node. This value is only valid if `lastNodeId` is not an empty string. If `lastNodeId` is an empty string, the value of `lastNodeSequenceId` can be arbitrary and shall be ignored."
         },
 		"nodeStates": {
             "type": "array",
@@ -135,7 +135,7 @@
         },
         "driving": {
             "type": "boolean",
-            "description": "True: indicates that the mobile robot is driving and/or rotating. Other movements of the mobile robot (e.g., lift movements) are not included here.\nFalse: indicates that the mobile robot is neither driving nor rotating."
+            "description": "True: indicates, that the mobile robot is driving (manual or automatic). Other movements (e.g., lift movements) are not included here. False: indicates that the mobile robot is not driving."
         },
         "paused": {
             "type": "boolean",
@@ -165,7 +165,7 @@
         },
         "actionStates": {
             "type": "array",
-            "description": "Array of the current actions and the actions which are yet to be finished. This may include actions from previous nodes that are still in progress\nWhen an action is completed, an updated state message is published with actionStatus set to finished and if applicable with the corresponding resultDescriptor. The actionStates are kept until a new order is received.",
+            "description": "Array of the current actions and the actions which are yet to be finished. This may include actions from previous nodes that are still in progress\nWhen an action is completed, an updated state message is published with actionStatus set to finished and if applicable with the corresponding actionDescription. The actionStates are kept until a new order is received.",
             "items": {
                 "$ref": "#/$defs/actionState"
             }
@@ -288,7 +288,7 @@
 			"properties": {
 				"nodeId": {
 					"type": "string",
-					"description": "Unique node identification"
+					"description": "Unique identifier of the node. The same node can be referenced multiple times within one state message. `sequenceId` is used to differentiate the sequence of traversal."
 				},
 				"sequenceId": {
 					"type": "integer",
@@ -340,7 +340,7 @@
 			"properties": {
 				"edgeId": {
 					"type": "string",
-					"description": "Unique edge identification"
+					"description": "Unique identifier of the edge. The same edge can be referenced multiple times within one state message. `sequenceId` is used to differentiate the sequence of traversal."
 				},
 				"sequenceId": {
 					"type": "integer",
@@ -362,7 +362,7 @@
 		},
 		"trajectory": {
             "type": "object",
-            "description": "The trajectory is to be communicated as a NURBS and is defined in chapter 6.7 Implementation of the Order message. Trajectory segments reach from the point, where the mobile robot starts to enter the edge to the point where it reports that the next node was traversed.",
+            "description": "The trajectory is to be communicated as a NURBS and is defined in chapter 7.3 Implementation of the Order message. Trajectory segments reach from the point, where the mobile robot starts to enter the edge to the point where it reports that the next node was traversed.",
             "required": [
                 "controlPoints"
             ],
@@ -399,7 +399,8 @@
                             },
                             "weight": {
                                 "type": "number",
-                                "description": "The weight, with which this control point pulls on the curve. When not defined, the default will be 1.0."
+                                "description": "The weight, with which this control point pulls on the curve. When not defined, the default will be 1.0.",
+								"exclusiveMinimum": 0
                             }
                         }
                     }
@@ -472,7 +473,7 @@
 		},
 		"mobileRobotPosition": {
 			"type": "object",
-            "description": "Defines the position on a map in world coordinates. Each floor has its own map.",
+            "description": "Current position of the mobile robot on the map.",
             "required": [
                 "x",
                 "y",
@@ -505,7 +506,7 @@
                 },
                 "localizationScore": {
                     "type": "number",
-                    "description": "Describes the quality of the localization and therefore, can be used, e.g., by SLAM mobile robot to describe how accurate the current position information is.\n0.0: position unknown\n1.0: position known\nOptional for vehicles that cannot estimate their localization score.\nOnly for logging and visualization purposes",
+                    "description": "Describes the quality of the localization and can therefore be used, e.g., by SLAM mobile robots to describe how accurate the current position information is. 0.0: lowest possible confidence 1.0: highest possible confidence. Only for logging and visualization purposes.",
                     "minimum": 0.0,
                     "maximum": 1.0
                 },
@@ -696,7 +697,7 @@
                 },
                 "actionStatus": {
                     "type": "string",
-                    "description": "WAITING: waiting for the trigger (passing the mode, entering the edge); INITIALIZING: Action was triggered, preparatory measures are initiated; RUNNING: The action is running; RETRIABLE: Actions that failed, but can be retried; PAUSED: paused by instantAction or external trigger; FINISHED: The action is finished; FAILED: action could not be performed.",
+                    "description": "WAITING: waiting for the trigger (passing the node, entering the edge); INITIALIZING: Action was triggered, preparatory measures are initiated; RUNNING: The action is running; RETRIABLE: Actions that failed, but can be retried; PAUSED: paused by instantAction or external trigger; FINISHED: The action is finished; FAILED: action could not be performed.",
                     "enum": [
                         "WAITING",
                         "INITIALIZING",
@@ -723,7 +724,7 @@
             "properties": {
                 "stateOfCharge": {
                     "type": "number",
-                    "description": "State of Charge in %: If mobile robot only provides values for good or bad battery levels, these will be indicated as 20% (bad) and 80% (good).",
+                    "description": "State of charge of the mobile robot. For permanently powered mobile robots, this field shall be 100.",
                     "minimum":0,
                     "maximum":100
                 },
@@ -736,7 +737,7 @@
                     "description": "Battery current in Ampere (A)"
                 },
                 "batteryHealth": {
-                    "type": "number",
+                    "type": "integer",
                     "description": "State of health in percent.",
                     "minimum":0,
                     "maximum":100
@@ -746,7 +747,7 @@
                     "description": "True: charging in progress. False: mobile robot is currently not charging."
                 },
                 "range": {
-                    "type": "number",
+                    "type": "integer",
                     "description": "Estimated reach with current State of Charge in meter.",
                     "minimum": 0
                 }
