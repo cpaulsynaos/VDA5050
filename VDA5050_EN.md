@@ -2086,10 +2086,10 @@ This JSON object defines order handling processes, actions and parameters which 
 |&emsp;&emsp;*description* | string | Free-form text: description of the parameter. |
 |&emsp;&emsp;*isOptional* | boolean | "true": optional parameter. |
 |&emsp;*}* | | |
-|*actionResult* | string | Free-form text: description of the result. |
-|*blockingTypes* | array of enum | Array of possible blocking types for defined action. <br> Enum {'NONE', 'SINGLE', 'SOFT', 'HARD'} |
-|pauseAllowed | boolean | "true": action can be paused via startPause, "false": action cannot be paused. |
-|cancelAllowed | boolean | "true": action can be cancelled via cancelOrder, "false": action cannot be cancelled. |
+|&emsp;*actionResult* | string | Free-form text: description of the result. |
+|&emsp;*blockingTypes* | array of enum | Array of possible blocking types for defined action. <br> Enum {'NONE', 'SINGLE', 'SOFT', 'HARD'} |
+|&emsp;pauseAllowed | boolean | "true": action can be paused via startPause, "false": action cannot be paused. |
+|&emsp;cancelAllowed | boolean | "true": action can be cancelled via cancelOrder, "false": action cannot be cancelled. |
 |*}* | | |
 
 #### mobileRobotGeometry
@@ -2180,9 +2180,6 @@ This JSON object details the software and hardware versions running on the mobil
 |&emsp;&emsp; *defaultGateway* | string | The default gateway used by the mobile robot, corresponding to the local IP address. |
 | &emsp;} | | |
 | ***batteryCharging*** { | JSON object | Information about battery charging parameters. |
-| *criticalLowChargingLevel* | float64 | Specifies the critical charging level in percent at or below which the fleet control should only send orders that command the mobile robot to a charging station. |
-| *maximumDesiredChargingLevel* | float64 | Specifies the maximum desired charging level in percent. |
-| *minimumDesiredChargingLevel* | float64 | Specifies the minimum desired charging level in percent. |
 | &emsp;*criticalLowChargingLevel* | float64 | Specifies the critical charging level in percent at or below which the fleet control should only send orders that command the mobile robot to a charging station. |
 | &emsp;*maximumDesiredChargingLevel* | float64 | Specifies the maximum desired charging level in percent. |
 | &emsp;*minimumDesiredChargingLevel* | float64 | Specifies the minimum desired charging level in percent. |
