@@ -51,7 +51,7 @@ Version 3.0.0
 [6 Protocol specification](#6-protocol-specification)<br>
   [6.1 Order](#61-order)<br>
     [6.1.1 Concept and logic](#611-concept-and-logic)<br>
-    [6.1.2 Orders and order updates](#612-orders-and-order-update)<br>
+    [6.1.2 Order and order updates](#612-order-and-order-updates)<br>
     [6.1.3 Order cancellation](#613-order-cancellation)<br>
     [6.1.4 Order rejection](#614-order-rejection)<br>
     [6.1.5 Corridors](#615-corridors)<br>
@@ -61,7 +61,7 @@ Version 3.0.0
     [6.2.3 Predefined actions](#623-predefined-actions)<br>
   [6.3 Maps](#63-maps)<br>
     [6.3.1 Map distribution](#631-map-distribution)<br>
-    [6.3.2 Maps in mobile robot state](#632-maps-in-the-mobile-robot-state)<br>
+    [6.3.2 Maps in the mobile robot state](#632-maps-in-the-mobile-robot-state)<br>
     [6.3.3 Map download](#633-map-download)<br>
     [6.3.4 Enable downloaded maps](#634-enable-downloaded-maps)<br>
     [6.3.5 Delete maps on the mobile robot](#635-delete-maps-on-the-mobile-robot)<br>
@@ -69,7 +69,7 @@ Version 3.0.0
     [6.4.1 Zone types](#641-zone-types)<br>
     [6.4.2 Zone set transfer](#642-zone-set-transfer)<br>
     [6.4.3 Communication for interactive zones](#643-communication-for-interactive-zones)<br>
-    [6.4.4 Interaction between zones](#644-interactions-between-zones)<br>
+    [6.4.4 Interactions between zones](#644-interactions-between-zones)<br>
     [6.4.5 Error handling within zones](#645-error-handling-within-zones)<br>
   [6.5 Connection](#65-connection)<br>
   [6.6 State](#66-state)<br>
@@ -97,7 +97,7 @@ Version 3.0.0
   [7.3 Implementation of the order message](#73-implementation-of-the-order-message)<br>
     [7.3.1 Format of action parameters](#731-format-of-action-parameters)<br>
   [7.4 Implementation of the instantAction message](#74-implementation-of-the-instantaction-message)<br>
-  [7.5 Implementation of the response message](#75-implementation-of-the-response-message)<br>
+  [7.5 Implementation of the responses message](#75-implementation-of-the-responses-message)<br>
   [7.6 Implementation of the zoneSet message](#76-implementation-of-the-zoneset-message)<br>
   [7.7 Implementation of the connection message](#77-implementation-of-the-connection-message)<br>
   [7.8 Implementation of the state message](#78-implementation-of-the-state-message)<br>
@@ -146,7 +146,7 @@ This specification does not address the following topics:
 The following terms and definitions apply for the purposes of this document. Terms that are not officially defined by standardization organizations may be interpreted differently in other contexts.
 
 ## 3.1 Mobile Robot
-A driverless system for material transport primarily in operational settings, controlled by automation independently of their level of autonomy [Source ISO 3691-4]
+A driverless system for material transport primarily in operational settings, controlled by automation independently of its level of autonomy [Source ISO 3691-4]
 
 ## 3.2 Moving
 State in which a mobile robot or any of its components undergoes a change in spatial position or orientation, including movement of wheels, load handling devices, or the robot body.
@@ -197,7 +197,7 @@ The MQTT topic structure is not strictly defined due to the mandatory topic stru
 For a cloud-based MQTT broker the topic structure might have to be adapted individually, but it should roughly follow the proposed structure.
 The topic names defined in the following sections are mandatory.
 
-For a local broker the MQTT topic levels are suggested as followed:
+For a local broker the MQTT topic levels are suggested as follows:
 
 **interfaceName/majorVersion/manufacturer/serialNumber/topic**
 
@@ -212,7 +212,7 @@ interfaceName | string | Name of the used interface
 majorVersion | string | Major version number of the VDA 5050 recommendation, preceded by "v"
 manufacturer | string | Manufacturer of the mobile robot.
 serialNumber | string | Unique mobile robot serial number consisting of the following characters: <br>A-Z <br>a-z <br>0-9 <br>_ <br>. <br>: <br>-
-topic | string | Topic (e.g., order or state) see Section [4.4 Topics for Communication](#43-topics-for-communication)
+topic | string | Topic (e.g., order or state) see Section [4.3 Topics for Communication](#43-topics-for-communication)
 
 >Table 1 Explanation of suggested MQTT topic levels
 
@@ -241,7 +241,7 @@ responses | fleet control | mobile robot | Fleet control's responses to requests
 
 ## 5.1 General
 
-There are at least the following participants for the operation of driverless transport system:
+There are at least the following participants for the operation of a driverless transport system:
 
 - The operator of the DTS provides basic information
 - The fleet control organizes and manages the operation
@@ -318,7 +318,7 @@ The fleet control only includes edges in an order which the concerning mobile ro
 >Figure 2 - Graph representation in fleet control and graph transmitted in orders
 
 The nodes and edges are passed as two lists in the order message.
-The order of the nodes and edges within those lists also governs the sequence in which the nodes and edges shall be traversed. The 'sequenceId' is shared between nodes and edges and defines the sequence of traversal. The first node has a `sequenceId` of 0, the first edge has a `sequenceId` of 1, the second node has a `sequenceId` of 2, etc. An edge with `sequenceId` n connects the nodes with `sequenceId` n-1 and n+1. The `sequenceId` shall be continuous within an order.
+The order of the nodes and edges within those lists also governs the sequence in which the nodes and edges shall be traversed. The `sequenceId` is shared between nodes and edges and defines the sequence of traversal. The first node has a `sequenceId` of 0, the first edge has a `sequenceId` of 1, the second node has a `sequenceId` of 2, etc. An edge with `sequenceId` n connects the nodes with `sequenceId` n-1 and n+1. The `sequenceId` shall be continuous within an order.
 
 For a valid order, there shall be at least one node and the number of edges shall be equal to the number of nodes minus one.
 
@@ -343,7 +343,7 @@ For traffic control and to accommodate resource constrained mobile robots, the f
 The process of updating an order is described in the next section.
 
 
-### 6.1.2 Orders and order update
+### 6.1.2 Order and order updates
 
 To support traffic management, fleet control can split the path communicated via order into two parts:
 
@@ -382,7 +382,7 @@ For the sake of readability, a complete JSON example has been omitted here.
 	]
 }
 ```
->Figure 4 Pseudocode of an order.
+>Figure 4 - Pseudocode of an order.
 
 At a later point in time, the order is extended by sending an order update (see pseudocode in Figure 5).
 Note that the `orderUpdateId` is incremented and that the first node of the order update corresponds to the last base node of the previous order message, the stitching node. The other nodes and edges from the previous base are not resent.
@@ -406,7 +406,7 @@ This ensures that the mobile robot can also perform the order update, i.e., that
 	]
 }
 ```
->Figure 5 Pseudocode of an order update. Note the change of the `orderUpdateId`.
+>Figure 5 - Pseudocode of an order update. Note the change of the `orderUpdateId`.
 
 This also aids in the event that an order update is lost (e.g., due to an unreliable wireless network).
 The mobile robot can always check that the last known base node has the same `nodeId` (and `sequenceId`) as the first node of a new order update.
@@ -440,7 +440,7 @@ Figure 8 describes the process of accepting an order or order update.
 All formatting and JSON data types are correct?
 
 2) **Is received order new or an update of the current order?**:
-Is `orderId` of the received order different to `orderId` of order the mobile robot currently holds?
+Is `orderId` of the received order different to `orderId` of the order the mobile robot currently holds?
 
 3) **Is mobile robot idle and not waiting for an update?**:
 Is the mobile robot in an idle state according to [6.6.8 Idle state of the mobile robot](#668-idle-state-of-the-mobile-robot) and not waiting for an update? Since nodes and edges and the corresponding action states of the order horizon are also included inside the state, the mobile robot might still have a horizon and therefore is waiting for an update and executing an order.
@@ -457,7 +457,7 @@ Is the mobile robot in an idle state according to [6.6.8 Idle state of the mobil
 
 9) **Is the received update a valid continuation of the currently still running order?**:	Is the first node of the received order the current decision point according to the order update chapter? The mobile robot is still moving or executing actions related to the base released in previous order updates or still has a horizon and is therefore waiting for a continuation of the order. In this case, the order update is only accepted if the first node of the new base is equal to the last node of the previous base.
 
-10) **Is the received update a valid continuation of the previously completed order?**: Is the first node of the received order the current decision point according to the order update chapter? The mobile robot is not executing any actions anymore neither is it waiting for a continuation of the order (meaning that it has completed its base with all related actions and does not have a horizon). In this case, the order update is only accepted if the first node of the new base is equal to the last node of the previous base.
+10) **Is the received update a valid continuation of the previously completed order?**: Is the first node of the received order the current decision point according to the order update chapter? The mobile robot is not executing any actions anymore nor is it waiting for a continuation of the order (meaning that it has completed its base with all related actions and does not have a horizon). In this case, the order update is only accepted if the first node of the new base is equal to the last node of the previous base.
 
 11) **Populate/append** new states to the `actionStates`/`nodeStates`/`edgeStates`.
 
@@ -519,7 +519,7 @@ These scenarios are shown in Figure 8 and described below.
 Resolution:
 
 1. The mobile robot shall not take over the new order in its internal buffer.
-2. The mobile robot shall report an error of type 'VALIDATION_FAILURE' and level 'WARNING‘
+2. The mobile robot shall report an error of type 'VALIDATION_FAILURE' and level 'WARNING'.
 3. The warning shall be reported until the mobile robot has accepted a new order.
 
 #### 6.1.4.2 Mobile robot receives an order with optional fields it cannot use
@@ -607,7 +607,7 @@ Resolution:
 
 1. The mobile robot shall not take over the new order in its internal buffer.
 2. The mobile robot shall report an error of type 'MOBILE_ROBOT_NOT_AVAILABLE' and level 'WARNING'.
-3. The warning shall be reported until the mobile robot is in an order mode that allows for new orders.
+3. The warning shall be reported until the mobile robot is in an operating mode that allows for new orders.
 
 #### 6.1.4.10 Mobile robot receives an order containing nodes with unknown mapId
 
@@ -632,6 +632,7 @@ Depending on the internal state of the mobile robot, the selected trajectory may
 
 ![Figure 10 Edges with corridor attribute.](./assets/edges_with_corridors.png)
 >Figure 10 - Edges with a `corridor` attribute that defines the left and right boundaries within which a mobile robot is allowed to deviate from its predefined trajectory to avoid obstacles. On the left, the kinematic center defines the allowed deviation, while on the right, the contour of the mobile robot, possibly extended by the load, defines the allowed deviation. This is defined by the `corridorReferencePoint` parameter.
+
 The area in which the mobile robot is allowed to navigate independently (and deviate from the original edge trajectory) is defined by a left and a right boundary.
 The optional `corridorReferencePoint` field specifies whether the mobile robot control point or the mobile robot contour should be inside the defined boundary.
 The boundaries of the edges shall be defined in such a way that the mobile robot is inside the boundaries of the new and now current edge as soon as it passes a node.
@@ -664,7 +665,7 @@ Some examples for which instant actions could be relevant are:
 - resume order after pause
 - activate signal (optical, audio, etc.)
 
-When a mobile robot receives an `instantAction`, an appropriate `actionStatus` shall be added to the `instantActionStates` array of the mobile robot's state.
+When a mobile robot receives an `instantAction`, an appropriate `actionState` shall be added to the `instantActionStates` array of the mobile robot's state.
 The `actionStatus` shall be updated according to the progress of the action.
 See also Figure 11 for the different transitions of an `actionStatus`.
 The `blockingType` of an instant action is always 'NONE'.
@@ -716,7 +717,7 @@ enableMap | - | Enable a previously downloaded map explicitly to be used in orde
 downloadMap | - | Trigger the download of a new map. Active during the download. Errors reported in mobile robot state. Finished after verifying the successful download, preparing the map for use and setting the map in the state. | yes | mapId (string)<br>mapVersion (string)<br>mapDownloadLink (string)<br>mapHash (string, optional) | maps | yes | no | no | no
 deleteMap | - | Trigger the removal of a map from the mobile robot's memory. | yes | mapId (string)<br>mapVersion (string) | maps | yes | no | no | no
 downloadZoneSet | - | Trigger the download of a zone set. Active during the download. Errors reported in mobile robot state. Finished after verifying the successful download, preparing the zone set for use and setting the zone set in the state. | yes | zoneSetId (string)<br>zoneSetDownloadLink (string)<br>zoneSetHash (string, optional) | zoneSets | yes | no | no | no
-enableZoneSet | - | Enable a previously downloaded zone set explicitly to be used in orders. | yes | zoneSetId (string)<br> | zoneSets | yes | yes | no | no
+enableZoneSet | - | Enable a previously downloaded zone set explicitly to be used in orders. | yes | zoneSetId (string) | zoneSets | yes | yes | no | no
 deleteZoneSet | - | Trigger the removal of a zone set from the mobile robot's memory. | yes | zoneSetId (string) | zoneSets | yes | no | no | no
 clearInstantActions | - | Removes all finished or failed instant actions from the mobile robot state. | yes | - | instantActionStates | yes | yes | no | no
 clearZoneActions | - | Removes all finished or failed zone actions from the mobile robot's state. | yes | - | zoneActionStates | yes | yes | no | no
@@ -741,22 +742,22 @@ updateCertificate | - | Request the mobile robot to download and activate a new 
 
 action type | 'INITIALIZING' | 'RUNNING' | 'PAUSED' | 'FINISHED' | 'FAILED' | 'RETRIABLE'
 ---|---|---|---|---|---|---
-startPause | - | Activation of the mode is in preparation.<br>If the mobile robot supports an instant transition, this state can be omitted. | - | Mobile robot is not moving. <br>All pauseable actions are paused. <br> The pause mode has been activated. <br>The mobile robot reports paused: "true". | The pause mode cannot be activated for some reason (e.g., overridden by hardware switch).
+startPause | - | Activation of the mode is in preparation.<br>If the mobile robot supports an instant transition, this state can be omitted. | - | Mobile robot is not moving. <br>All pauseable actions are paused. <br> The pause mode has been activated. <br>The mobile robot reports paused: "true". | The pause mode cannot be activated for some reason (e.g., overridden by hardware switch). | -
 stopPause | - | Deactivation of the mode is in preparation. <br>If the mobile robot supports an instant transition, this state can be omitted. | - | The pause mode has been deactivated. <br>All paused actions are resumed. <br>The mobile robot reports paused: "false". | The pause mode cannot be deactivated for some reason (e.g., overridden by hardware switch). | -
 startHibernation | - | Activation of the hibernate mode is in preparation. If the mobile robot supports an instant transition, this state can be omitted.| - | Mobile robot is not moving. The active order has been cleared, if any. No state messages are sent by the mobile robot. <br>Hibernate mode has been activated. The mobile robot reports connection state "HIBERNATING".| The HIBERNATING connection state could not be published (e.g., overridden by a hardware switch).| -
 stopHibernation | - | Deactivation of the hibernate mode is in preparation. If the mobile robot supports an instant transition, this state can be omitted.| - | Hibernate mode has been deactivated.<br>The mobile robot reports connectionState "ONLINE".| The hibernate mode could not be deactivated (e.g., overridden by a hardware switch).| -
 shutdown | - | Activation of the OFFLINE connection state is in preparation. If the mobile robot supports an instant transition, this state can be omitted.| - | Mobile robot is not moving. The connection between mobile robot and broker is terminated in a coordinated way.<br>The mobile robot reports connection state "OFFLINE".| The shutdown cannot be executed for some reason (e.g., mobile robot is not in idle state, overridden by a hardware switch).| -
 startCharging | - | Activation of the charging process is in progress (communication with charger is running). <br>If the mobile robot supports an instant transition, this state can be omitted. | - | The charging process has been started. <br>The mobile robot reports powerSupply.charging: "true". | The charging process could not be started for some reason (e.g., not aligned to charger). Charging problems should correspond with an error. | The charging process could not be initiated. The mobile robot is waiting for intervention from fleet control or an operator.
 stopCharging | - | Deactivation of the charging process is in progress (communication with charger is running). <br>If the mobile robot supports an instant transition, this state can be omitted. | - | The charging process has been stopped. <br>The mobile robot reports powerSupply.charging: "false" | The charging process could not be stopped for some reason (e.g., not aligned to charger).<br> Charging problems should correspond with an error. | -
-initializePosition | - | Initializing of the new pose in progress (confidence checks, etc.). <br>If the mobile robot supports an instant transition, this state can be omitted. | - | The pose has been reset. <br>The mobile robot reports <br>mobileRobotPosition.x = x, <br>mobileRobotPosition.y = y, <br>mobileRobotPosition.theta = theta <br>mobileRobotPosition.mapId = mapId <br>mobileRobotPosition.lastNodeId = lastNodeId | The pose is not valid or cannot be reset. <br>General localization problems should correspond with an error. | -
+initializePosition | - | Initializing of the new pose in progress (confidence checks, etc.). <br>If the mobile robot supports an instant transition, this state can be omitted. | - | The pose has been reset. <br>The mobile robot reports <br>mobileRobotPosition.x = x, <br>mobileRobotPosition.y = y, <br>mobileRobotPosition.theta = theta <br>mobileRobotPosition.mapId = mapId <br>lastNodeId = lastNodeId | The pose is not valid or cannot be reset. <br>General localization problems should correspond with an error. | -
 downloadMap | Initialize the connection to the map server. | Mobile robot is downloading the map. | - | The download has finished. Mobile robot updates its state by setting the mapId/mapVersion and the corresponding mapStatus to 'DISABLED'. | The download failed, updated in mobile robot state (e.g., connection lost, Map server unreachable, mapId/mapVersion not existing on map server). | Download failed or was interrupted. The mobile robot is waiting for intervention from fleet control.
 enableMap | - | The mobile robot enables the map with the requested mapId and mapVersion and disables any other map with the same mapId. | - | The map has been enabled. The mobile robot updates the corresponding mapStatus of the requested map to 'ENABLED' and the other versions with same mapId to 'DISABLED'. | The requested combination of mapId/mapVersion does not exist.| -
 deleteMap | - | Mobile robot deletes map with requested mapId and mapVersion from its internal memory. | - | The map has been deleted. The mobile robot removes mapId/mapVersion from its state. | The map could not be deleted, e.g., because map is currently in use or requested combination of mapId/mapVersion has already been deleted before. | -
 downloadZoneSet | Initialize the connection to the zone set server. | Mobile robot is downloading the zone set. | - | The download has finished. The mobile robot updates its state by setting a corresponding zoneSet object in its state with zoneSetStatus 'DISABLED'. | The download failed, updated in mobile robot state (e.g., connection lost, server unreachable, zone set not existing, zone set with same zoneSetId already on mobile robot). | Download failed or was interrupted. The mobile robot is waiting for intervention from fleet control.
 enableZoneSet | - | Mobile robot enables the zone set with the requested zoneSetId and disables any other zone set for the same mapId. | - | The zone set has been enabled. The mobile robot updates the corresponding zoneSetStatus of the requested zoneSet to 'ENABLED' and the other zone sets for the same mapId to 'DISABLED'. | The requested zone set does not exist.| -
-deleteZoneSet | - | Mobile robot deletes the zone set with requested zoneSetId from its internal memory. | - | The zone set has been deleted. The mobile robot removes zoneSet object from its state. | The zone set could not be deleted, deleted, e.g., because zone set is currently in use or the requested zone set has already been deleted before. | -
+deleteZoneSet | - | Mobile robot deletes the zone set with requested zoneSetId from its internal memory. | - | The zone set has been deleted. The mobile robot removes zoneSet object from its state. | The zone set could not be deleted, e.g., because zone set is currently in use or the requested zone set has already been deleted before. | -
 clearInstantActions | - | | - | The instant actions array has been cleaned from all FINISHED or FAILED instantActions. | - | - 
-clearZoneActions | - | | - | The zone actions array has been cleaned from all FINISHED or FAILED instantActions. | - | - 
+clearZoneActions | - | | - | The zone actions array has been cleaned from all FINISHED or FAILED zoneActions. | - | - 
 stateRequest | - | - | - | The state has been communicated | - | - 
 logReport | - | The report is being generated. <br>If the mobile robot supports an instant generation, this state can be omitted. | - | The report has been stored. <br>The name of the log is reported as part of the action state. | The report can not be stored (e.g., no space).| - 
 pick | Initializing of the pick process, e.g., outstanding lift operations. | The pick process is running (mobile robot is moving into station, load handling device is busy, communication with station is running, etc.). | The pick process is being paused, e.g., if a safety field is violated. <br>After removing the violation, the pick process continues. | Pick has been done. <br>Load has entered the mobile robot and mobile robot reports new load state. | Pick failed, e.g., station is unexpected empty. <br> Failed pick operations should correspond with an error. | Pick failed, but is retriable. The mobile robot is waiting for intervention from fleet control or an operator.
@@ -764,7 +765,7 @@ drop | Initializing of the drop process, e.g., outstanding lift operations. | Th
 detectObject | - | Object detection is running. | - | Object has been detected. | Could not detect the object. | Object detection failed, but is retriable. The mobile robot is waiting for intervention from fleet control or an operator.
 finePositioning | - | Mobile robot positions itself exactly on a target. | The fine positioning process is being paused, e.g., if a safety field is violated. <br> The fine positioning continues after e.g. the violation had been resolved. | Goal position in reference to the station has been reached. | Goal position in reference to the station could not be reached. | Fine positioning failed but is retriable. The mobile robot is waiting for intervention from fleet control or an operator.
 waitForTrigger | - | Mobile robot is waiting for the trigger | - | Trigger has been triggered. | waitForTrigger fails, if order has been canceled. | -
-cancelOrder | - | Mobile robot is stopping or driving, until it reaches the next node. | - | Mobile robot is not moving. Mobile robot has canceled executing the order and is in idle state. | <br>Mobile robot has no active order<br>The previous order has already been canceled.<br>Passed orderId does not match the currently active orderId. | -
+cancelOrder | - | Mobile robot is stopping or driving, until it reaches the next node. | - | Mobile robot is not moving. Mobile robot has canceled executing the order and is in idle state. | Mobile robot has no active order.<br>The previous order has already been canceled.<br>Passed orderId does not match the currently active orderId. | -
 factsheetRequest | - | - | - | The factsheet has been communicated | - | -
 updateCertificate | - | Mobile robot is downloading and installing certificates | - | Certificates have been downloaded, installed and are active. | Download or installation failed. | -
 
@@ -779,7 +780,7 @@ The download shall be secured via TLS as well, since the sender of the instantAc
 
 ## 6.3 Maps
 
-To ensure consistent navigation among different types of mobile robots, the position is always specified in reference to the project-specific coordinate system (see Figure 12). The project-specific coordinate system is referring to the coordinate system that is defined for the interaction between fleet control and the mobile robot.
+To ensure consistent navigation among different types of mobile robots, the position is always specified in reference to the project-specific coordinate system (see Figure 12). The project-specific coordinate system refers to the coordinate system that is defined for the interaction between fleet control and the mobile robot.
 For the differentiation between different levels of a site or location, a unique `mapId` is used.
 The map coordinate system is to be specified as a right-handed coordinate system with the z-axis pointing skywards.
 A positive rotation therefore is to be understood as a counterclockwise rotation.
@@ -831,7 +832,7 @@ The mobile robot shall reject the download of a map with a `mapId` and `mapVersi
 
 There are two ways to enable a map on a mobile robot:
 
-1. **Fleet control enables map**: Use the `enableMap` instant action to set a map to 'ENABLED' on the mobile robot. Other Versions of the same `mapId` with different `mapVersion` are set to 'DISABLED'.
+1. **Fleet control enables map**: Use the `enableMap` instant action to set a map to 'ENABLED' on the mobile robot. Other versions of the same `mapId` with different `mapVersion` are set to 'DISABLED'.
 2. **Manually enable a map on the mobile robot**: In some cases, it might be necessary to enable the maps on the mobile robot directly. The result shall be reported in the mobile robot state.
 
 Fleet control shall ensure that the correct maps are activated on the mobile robot when sending the corresponding `mapId` as part of a `nodePosition` in an order.
@@ -847,8 +848,8 @@ After successfully deleting a map, the mobile robot shall remove the correspondi
 
 Zones are used to define rules for specific areas of the mobile robot workspace. In this way, zones allow mobile robots to navigate freely between nodes while giving the fleet control the ability to manage traffic. Zones can be used to locally deny mobile robots access to areas or to link access to conditions (zone types: 'BLOCKED' and 'RELEASE'). It is also possible to enforce specific behavior while within the zone (zone types: 'LINE_GUIDED', 'SPEED_LIMIT', 'COORDINATED_REPLANNING', and 'ACTION') or influence the driving behavior by incentivizing or penalizing certain areas (zone types: 'PRIORITY' and 'PENALTY') or giving a predefined driving direction (zone types: 'DIRECTED', 'BIDIRECTED'). The zone types are defined in the following sections.
 
-Potential conflicts in orders due to overlapping of zones or combination of zone and edge properties and how to resolve them are addressed in section [6.4.4 Interaction between zones](#644-interactions-between-zones). For released nodes that are part of the order but are restricted due to zones (e.g., node located within a 'BLOCKED' or 'RELEASE' zone), the robot is expected to act according to the zones (e.g., not enter or wait for 'GRANTED' state of the request).
-Some mobile robots cannot process zones at all, while other mobile robots might only be able to work with a certain subset of zone types, such as 'BLOCKED'. All mobile robots shall therefore report to fleet control which zones they are able to understand by adding the according zone names to the `supportedZones` array under `typeSpecifications` in their factsheet.
+Potential conflicts in orders due to overlapping of zones or combination of zone and edge properties and how to resolve them are addressed in section [6.4.4 Interactions between zones](#644-interactions-between-zones). For released nodes that are part of the order but are restricted due to zones (e.g., node located within a 'BLOCKED' or 'RELEASE' zone), the robot is expected to act according to the zones (e.g., not enter or wait for 'GRANTED' state of the request).
+Some mobile robots cannot process zones at all, while other mobile robots might only be able to work with a certain subset of zone types, such as 'BLOCKED'. All mobile robots shall therefore report to fleet control which zones they are able to understand by adding the according zone names to the `supportedZones` array under `typeSpecification` in their factsheet.
 Also (virtually) line-guided mobile robots can choose to support zone-based navigation if they can implement the logic of the corresponding zone types defined in the following. 
 A zone set shall only be changed and distributed by fleet control to keep consistency in the system.
 
@@ -900,8 +901,8 @@ In kinematic center-based zones, the mobile robot's kinematic center determines 
 | | direction | float64 | Preferred direction of travel within the zone in radians. The direction of travel is the angular orientation of the mobile robot's velocity vector in the project-specific coordinate system. |
 | | directedLimitation | string | Enum {'SOFT','RESTRICTED','STRICT'}<br>SOFT: Mobile robots may deviate from the defined direction of travel, but should avoid it, RESTRICTED: The mobile robot may deviate from the defined direction of travel, e.g., to avoid an obstacle, but shall never traverse opposite to the defined direction of travel, STRICT: The mobile robot shall maintain the defined direction of travel as precisely as its technical capabilities allow. |
 | BIDIRECTED | | | While in this zone, mobile robots shall only move in the defined direction of travel and its direct opposite (+ Pi), mobile robots should not cross this zone in any other direction. | 
- | direction | float64 | Preferred direction of travel within the zone in radians. The direction of travel is the angular orientation of the mobile robot's velocity vector in the project-specific coordinate system.|
-| | bidirectedLimitation | string | Enum {'SOFT', 'RESTRICTED'}<\br>SOFT: Mobile robots may deviate from the defined directions of travel, but should avoid it, RESTRICTED: The mobile robot shall not traverse in any other direction than the directions of travel, except for obstacle avoidance. |
+| | direction | float64 | Preferred direction of travel within the zone in radians. The direction of travel is the angular orientation of the mobile robot's velocity vector in the project-specific coordinate system.|
+| | bidirectedLimitation | string | Enum {'SOFT', 'RESTRICTED'}<br>SOFT: Mobile robots may deviate from the defined directions of travel, but should avoid it, RESTRICTED: The mobile robot shall not traverse in any other direction than the directions of travel, except for obstacle avoidance. |
 
 >Table 7 - Kinematic center-based zone types and their parameters
 
@@ -932,10 +933,10 @@ The `requestId` allows fleet control to distinguish between different requests a
 Each request attempt shall use a unique identifier per mobile robot. Ids can be reused after a mobile robot restart.
 
 For requests to enter a 'RELEASE' zone, a `zoneRequest` object of `requestType` 'ACCESS' shall be added to the state message.
-For permission to enter a 'COORINATED_REPLANNING' zone with a planned path or for replanning its path within the zone, the `requestType` shall be set to 'REPLANNING'.
+For permission to enter a 'COORDINATED_REPLANNING' zone with a planned path or for replanning its path within the zone, the `requestType` shall be set to 'REPLANNING'.
 For a 'REPLANNING' request, the planned path shall be added as NURBS to the `trajectory` field of the `zoneRequest`. Multiple requests with different trajectories for the same zone can be made. Each path shall be requested with its own `zoneRequest` object.
 If a mobile robot requires access to a workspace covered by two or more 'RELEASE' zones, it shall request access and receive approval for all necessary zones before entering the area.
-If a mobile robot navigates through a workspace on the map that is covered by two or more 'COORDINATED REPLANNING' zones, it shall request its path within this area individually for each zone and receive approval from the fleet control before entering or changing paths.
+If a mobile robot navigates through a workspace on the map that is covered by two or more 'COORDINATED_REPLANNING' zones, it shall request its path within this area individually for each zone and receive approval from the fleet control before entering or changing paths.
 
 The parameter `requestStatus` shall be initially set to 'REQUESTED' by the mobile robot when stating its request.
 
@@ -971,11 +972,11 @@ If the mobile robot is already inside the 'COORDINATED_REPLANNING' zone when a r
 
 ### 6.4.4 Interactions between zones
 
-In the following matrix possible interactions between zones are described. The matrix is symmetric, as the interaction between two zones is the same, regardless of the order in which they are considered. For each combination, there is either a zone behavior that is overrulling the other (e.g., a 'BLOCKED' zone overrules a 'LINE_GUIDED' zone) or there is no conflict (e.g., a 'LINE_GUIDED' zone and a 'COORDINATED_REPLANNING' zone). 'DIRECTED' and 'BIDIRECTED' zones shall not overlap, since this might lead to an undefined behavior. The column No Zone defines the behavior for contour-based zones, where mobile robots can be inside a defined zone type and an area without a zone at the same time. For kinematic center-based zones the mobile robot can only be completely within or outside the zone, so there is no possible interaction.
+In the following matrix possible interactions between zones are described. The matrix is symmetric, as the interaction between two zones is the same, regardless of the order in which they are considered. For each combination, there is either a zone behavior that is overruling the other (e.g., a 'BLOCKED' zone overrules a 'LINE_GUIDED' zone) or there is no conflict (e.g., a 'LINE_GUIDED' zone and a 'COORDINATED_REPLANNING' zone). 'DIRECTED' and 'BIDIRECTED' zones shall not overlap, since this might lead to an undefined behavior. The column No Zone defines the behavior for contour-based zones, where mobile robots can be inside a defined zone type and an area without a zone at the same time. For kinematic center-based zones the mobile robot can only be completely within or outside the zone, so there is no possible interaction.
 
 | |**BLOCKED**|**RELEASE**|**LINE_GUIDED**|**COORDINATED_REPLANNING**|**SPEED_LIMIT**|**ACTION**|**PRIORITY**|**PENALTY**|**DIRECTED**|**BIDIRECTED**|**No Zone**|**EDGE-PROPERTIES**
 ---|---|---|---|---|---|---|---|---|---|---|---|---
-**BLOCKED**|BLOCKED|BLOCKED|BLOCKED|BLOCKED|BLOCKED|BLOCKED|BLOCKED|BLOCKED|BLOCKED|BLOCKED|BLOCKED|BLOCKED|
+**BLOCKED**|BLOCKED|BLOCKED|BLOCKED|BLOCKED|BLOCKED|BLOCKED|BLOCKED|BLOCKED|BLOCKED|BLOCKED|BLOCKED|BLOCKED
 **RELEASE**||No Conflict|No Conflict|No Conflict|No Conflict|No Conflict|No Conflict|No Conflict|No Conflict|No Conflict|No Conflict|No Conflict
 **LINE_GUIDED**|||No conflict|LINE_GUIDED|No Conflict| (1) |LINE_GUIDED|LINE_GUIDED|LINE_GUIDED|No conflict|LINE_GUIDED|No conflict
 **COORDINATED_REPLANNING**||||(2)|No conflict|(1)|No conflict|No conflict|No conflict|No conflict|COORDINATED_REPLANNING|(3)
@@ -1015,7 +1016,7 @@ As a result, the timestamp and headerId fields will always be outdated.
 
 Mobile robot wants to disconnect gracefully:
 
-1. Mobile robot sends "vda5050/v3/manufacturer/serialNumber/connection" with `connectionState` set to `OFFLINE`.
+1. Mobile robot sends "vda5050/v3/manufacturer/serialNumber/connection" with `connectionState` set to 'OFFLINE'.
 2. Disconnect the MQTT connection with a disconnect command.
 
 Mobile robot comes online:
@@ -1051,6 +1052,19 @@ The following events shall trigger a transmission of the state message:
 - Change in the `powerSupply.charging` field
 - Change in the `nodeStates` or `edgeStates` arrays
 - Change in the `actionStates`, `instantActionStates` or `zoneActionStates` arrays
+- Change in the `zoneSets` array
+- Change in the `operatingMode` field
+- Change in the `driving` field
+- Change in the `paused` field
+- Change in the `safetyState` object
+- Change in the `newBaseRequest` field
+- Change in the `lastNodeId` or `lastNodeSequenceId` field
+- Change in the `edgeRequests` or `zoneRequests` arrays
+- Change in the `powerSupply.charging` field
+- Change in the `nodeStates` or `edgeStates` arrays
+- Change in the `actionStates`, `instantActionStates` or `zoneActionStates` arrays
+- Changes in the `loads` array
+- Change in the `errors` array
 - Change in the `zoneSets` array
 - Change in the `maps` array
 
@@ -1100,7 +1114,7 @@ When an active order exists, the fields `lastNodeId` and `lastNodeSequenceId` sh
 The allowedDeviationXY is defined as an ellipse around the node position to allow more flexible approaches to the node.
 
 ![Figure 20 allowedDeviationXY ellipse](./assets/ellipse.png)
->Figure 20 - allowedDeviation ellipse
+>Figure 20 - allowedDeviationXY ellipse
 
 
 ### 6.6.3 Base request
@@ -1110,7 +1124,7 @@ If the mobile robot detects that its base is running short, it can set the `newB
 ### 6.6.4 Information
 
 The mobile robot can submit arbitrary additional information to the fleet control via the `information` array.
-It is up to the mobile robot to decide how long it reports information via an information message.
+It is up to the mobile robot to decide how long it reports this information.
 
 The fleet control shall not use the information for logic; they shall only be used for visualization and debugging purposes.
 
@@ -1196,7 +1210,7 @@ Operating Mode | Description
 ---|---
 AUTOMATIC | Fleet control is in full control of the mobile robot. <br>Mobile robot moves and executes actions based on orders from the fleet control.
 SEMIAUTOMATIC | Fleet control is in control of the mobile robot.<br> Mobile robot moves and executes actions based on orders from the fleet control. <br>The driving speed is controlled by the HMI.<br>The steering is under automatic control.
-INTERVENED | Fleet control is not in control of the mobile robot. The mobile robot is reporting its state correctly.<br>HMI can be used to control the steering, velocity and handling devices of the mobile robot.<br>Fleet control is allowed to send orders or order updates to the mobile robot to be executed after changing back into operating mode 'AUTOMATIC' or 'SEMI-AUTOMATIC'. Fleet control shall not send any instant action except `cancelOrder`.<br>The mobile robot shall not clear the order but shall remove all zone requests from the state, also if the mobile robot is already inside a 'RELEASE' zone. (*Remark: If necessary, the fleet control can continue to track the position of the mobile robot and decide whether clearance for other mobile robots is possible.*) The mobile robot shall not request any permissions to enter a 'RELEASE' zone or for replanning inside a 'COORDINATED_REPLANNING' zone.<br>If entering operating mode 'INTERVENED' has any impact on running actions the mobile robot shall reflect this in the state message accordingly.<br>If the mobile robot leaves this operating mode and does not directly switch into 'AUTOMATIC' or 'SEMI-AUTOMATIC' mode it shall act according to new operating mode. If the mobile robot leaves this operating mode and switches directly into 'AUTOMATIC' or 'SEMI-AUTOMATIC' mode the mobile robot shall continue executing any current order. If the mobile robot detects during operating mode 'INTERVENED' that a continuation of the current order is not possible the mobile robot shall switch into operating mode 'MANUAL' and act accordingly.
+INTERVENED | Fleet control is not in control of the mobile robot. The mobile robot is reporting its state correctly.<br>HMI can be used to control the steering, velocity and handling devices of the mobile robot.<br>Fleet control is allowed to send orders or order updates to the mobile robot to be executed after changing back into operating mode 'AUTOMATIC' or 'SEMIAUTOMATIC'. Fleet control shall not send any instant action except `cancelOrder`.<br>The mobile robot shall not clear the order but shall remove all zone requests from the state, also if the mobile robot is already inside a 'RELEASE' zone. (*Remark: If necessary, the fleet control can continue to track the position of the mobile robot and decide whether clearance for other mobile robots is possible.*) The mobile robot shall not request any permissions to enter a 'RELEASE' zone or for replanning inside a 'COORDINATED_REPLANNING' zone.<br>If entering operating mode 'INTERVENED' has any impact on running actions the mobile robot shall reflect this in the state message accordingly.<br>If the mobile robot leaves this operating mode and does not directly switch into 'AUTOMATIC' or 'SEMIAUTOMATIC' mode it shall act according to new operating mode. If the mobile robot leaves this operating mode and switches directly into 'AUTOMATIC' or 'SEMIAUTOMATIC' mode the mobile robot shall continue executing any current order. If the mobile robot detects during operating mode 'INTERVENED' that a continuation of the current order is not possible the mobile robot shall switch into operating mode 'MANUAL' and act accordingly.
 MANUAL | Fleet control is not in control of the mobile robot. <br>Fleet control shall not send orders or actions to the mobile robot. <br>HMI can be used to control the steering, velocity and handling devices of the mobile robot.<br>The position of the mobile robot is sent to the fleet control.<br>When the mobile robot enters this mode, it immediately clears any current order.<br>If, while being in this mode, the mobile robot detects that it is being moved to a position where the current value of `lastNodeId` cannot be used as a start node of a new order, it shall set `lastNodeId` to an empty string ("").
 STARTUP | Fleet control is not in control of the mobile robot. The mobile robot is starting up and not ready to receive orders. State message parameters may be incomplete or invalid until startup is finished.
 SERVICE | Fleet control is not in control of the mobile robot. <br>Fleet control shall not send orders or actions to the mobile robot. <br>When the mobile robot enters this mode, it immediately clears any current order.<br>The mobile robot shall set `lastNodeId` to an empty string ("").<br>Authorized personnel can reconfigure the mobile robot.
@@ -1210,7 +1224,7 @@ Operating Mode | Fleet Control in control | Valid state message content | Clear 
 AUTOMATIC | YES | YES | NO | NO | NO | YES | YES
 SEMIAUTOMATIC | YES | YES | NO | NO | NO | YES | YES
 INTERVENED | NO | YES | NO | NO | YES | Only `cancelOrder` allowed | YES
-MANUAL | NO | YES | YES | YES, if continuation of order is not possible | YES | NO | NO
+MANUAL | NO | YES | YES | YES, if start of new order not possible anymore | YES | NO | NO
 STARTUP | NO | NO | YES | YES | YES | NO | NO
 SERVICE | NO | YES | YES | YES | YES | NO | NO
 TEACH_IN | NO | YES | YES | YES | YES | NO | NO
@@ -1232,11 +1246,11 @@ In these cases the mobile robot shall clear its current order which means that:
 - Any running action in the `actionStates` that
 	- can be cancelled (cancelAllowed = true) shall be cancelled and be reported as 'FAILED' in `actionStates`.
 	- cannot be cancelled (cancelAllowed = false) shall be reflected by reporting 'RUNNING' while being executed, and afterwards as the respective state ('FINISHED' if successful, 'FAILED' otherwise).
-- The value of `orderId`, `orderUpdateId`, `lastNodeId` and `lastNodeSequenceId` remain unchanged.
+- The values of `orderId`, `orderUpdateId`, `lastNodeId` and `lastNodeSequenceId` remain unchanged.
 - The arrays `nodeStates` and `edgeStates` are set to empty lists.
 - Any requests shall be removed from the state.
 
-As long as the actions of an order are not in state 'FINISHED' or 'FAILED' the mobile robot shall not report operating mode 'MANUAL', 'SERVICE' or 'TEACH_IN'. `nodesStates` and `edgeStates` shall not be emptied before the operating mode 'MANUAL', 'SERVICE' or 'TEACH_IN' is reported.
+As long as the actions of an order are not in state 'FINISHED' or 'FAILED' the mobile robot shall not report operating mode 'MANUAL', 'SERVICE' or 'TEACH_IN'. `nodeStates` and `edgeStates` shall not be emptied before the operating mode 'MANUAL', 'SERVICE', 'STARTUP' or 'TEACH_IN' is reported.
 
 An order cancellation can only be triggered by fleet control.
 
@@ -1259,7 +1273,7 @@ actionStatus | Description
 'WAITING' | Action was received by the mobile robot but the corresponding node was not yet traversed or the corresponding edge was not yet entered.
 'INITIALIZING' | Action was triggered, preparatory measures are initiated.
 'RUNNING' | The action is running.
-'PAUSED' | The action is paused because of a pause instantAction or external trigger (pause button on the mobile robot)
+'PAUSED' | The action is paused because of a startPause instantAction or external trigger (pause button on the mobile robot)
 'RETRIABLE' | Actions that failed, but can be retried, specified by the retriable parameter in the action of an order. Transition from this state is triggered by a retry or skipRetry instantAction or an external trigger.
 'FINISHED' | The action is finished. <br>A result is reported via the `actionResult`.
 'FAILED' | Action could not be finished for whatever reason.
@@ -1411,7 +1425,7 @@ All field names are in camelCase.
 If a variable is marked as optional, it is optional for the sender as the variable might not be applicable in certain cases (e.g., when the fleet control sends an order to a mobile robot, some mobile robots plan their trajectory themselves and the field `trajectory` within the `edge` object of the order can be omitted).
 
 If the mobile robot receives a message that contains a field which is marked as optional in this protocol, the mobile robot is expected to act accordingly and shall not ignore the field.
-If the mobile robot cannot process the order due to an unsupported parameter, it shall communicate this with an error of type 'UNSUPPORTED_PARAMETER' and error level 'CRITICAL' and to reject the order.
+If the mobile robot cannot process the order due to an unsupported parameter, it shall communicate this with an error of type 'UNSUPPORTED_PARAMETER' and error level 'CRITICAL' and reject the order.
 
 Fleet control shall only send optional fields that the mobile robot supports.
 
@@ -1513,10 +1527,10 @@ Object structure | Unit | Data type | Description
 ---|---|---|---
 **action** { | | JSON object | Describes an action that the mobile robot can perform.
 actionType | | string | Type of the action. For predefined actions this is defined in the first column of table 4. <br> Identifies the function of the action.
-actionId | | string | Unique ID to identify the action and map them to the `actionState` in the state. <br>Suggestion: Use UUIDs.
+actionId | | string | Unique ID to identify the action and map it to the `actionState` in the state. <br>Suggestion: Use UUID.
 *actionDescriptor* | | string | A user-defined, human-readable name or descriptor. This shall not be used for logical purposes.
 blockingType | | string | Enum {'NONE', 'SINGLE', 'SOFT', 'HARD'}: <br> 'NONE': allows driving and other actions;<br> 'SINGLE': allows driving but no other actions;<br>'SOFT': allows other actions but not driving;<br>'HARD': is the only allowed action at that time.
-***actionParameters [actionParameter]*** | | array | Array of actionParameter objects for the indicated action, e.g., "deviceId", "loadId", "external triggers". <br><br> An example implementation can be found in [7.3.1 Format of action parameters]((#731-format-of-action-parameters)).
+***actionParameters [actionParameter]*** | | array | Array of actionParameter objects for the indicated action, e.g., "deviceId", "loadId", "external triggers". <br><br> An example implementation can be found in [7.3.1 Format of action parameters](#731-format-of-action-parameters).
 *retriable* <br> } | | boolean | "true": action can enter RETRIABLE state if it fails.<br>"false": action enters FAILED state directly after it fails.<br>Default: "false".
 
 Object structure | Unit | Data type | Description
@@ -1600,7 +1614,7 @@ serialNumber | string | Serial number of the mobile robot.
 Object `action` is defined in [7.3 Implementation of the order message](#73-implementation-of-the-order-message).
 
 
-## 7.5 Implementation of the response message
+## 7.5 Implementation of the responses message
 
 Object structure/Identifier | Data type | Description
 | --- | --- | --- |
@@ -1632,7 +1646,7 @@ serialNumber | string | Serial number of the mobile robot.
 
 | Object structure | Data type | Description |
 | --- | --- | --- |
-| zoneSet{ | JSON object | Zone set detailing a dedicated map. | 
+| zoneSet { | JSON object | Zone set detailing a dedicated map. | 
 | mapId | string | Globally unique identifier of the map the zone set particularizes. | 
 | zoneSetId | string | Globally unique identifier of the zone set. |
 | *zoneSetDescriptor* | string | A user-defined, human-readable name or descriptor. This shall not be used for logical purposes. | 
@@ -1647,7 +1661,7 @@ A single zone object has the following structure:
 | zoneType | string | Enum {'BLOCKED', 'LINE_GUIDED', 'RELEASE', 'COORDINATED_REPLANNING', 'SPEED_LIMIT', 'ACTION', 'PRIORITY', 'PENALTY', 'DIRECTED', 'BIDIRECTED'}, Zone type according to section [6.4.1 Zone types](#641-zone-types). |
 | *zoneDescriptor* | string | A user-defined, human-readable name or descriptor. This shall not be used for logical purposes. | 
 | **vertices[vertex]**| array | Array of vertices that define the geometric shape of the zone in a counterclockwise direction. |
-| *maximumSpeed* | float64 | Required only for SPEED_LIMIT zone as defined in chapter  [6.4.1 Zone types](#641-zone-types).| 
+| *maximumSpeed* | float64 | Required only for SPEED_LIMIT zone as defined in chapter [6.4.1 Zone types](#641-zone-types).| 
 | ***entryActions[zoneAction]***| array | Required only for ACTION zone as defined in chapter [6.4.1 Zone types](#641-zone-types).| 
 | ***duringActions[zoneAction]*** | array | Required only for ACTION zone as defined in chapter [6.4.1 Zone types](#641-zone-types).| 
 | ***exitActions[zoneAction]*** | array | Required only for ACTION zone as defined in chapter [6.4.1 Zone types](#641-zone-types).| 
@@ -1664,7 +1678,7 @@ A `zoneAction` follows the structure of an action, except the mobile robot gener
 Object structure | Unit | Data type | Description
 ---|---|---|---
 **zoneAction** { | | JSON object | Describes an action that the mobile robot can perform.
-actionType | | string | Name of action as described in the first column of "Actions and Parameters". <br> Identifies the function of the action.
+actionType | | string | Name of action as described in the first column of table 4. <br> Identifies the function of the action.
 *actionDescriptor* | | string | A user-defined, human-readable name or descriptor. This shall not be used for logical purposes.
 blockingType | | string | Enum {'NONE', 'SINGLE', 'SOFT', 'HARD'}: <br> 'NONE': allows driving and other actions;<br> 'SINGLE': allows driving but no other actions;<br>'SOFT': allows other actions but not driving;<br>'HARD': is the only allowed action at that time.
 ***actionParameters [actionParameter]*** | | array | Array of actionParameter objects for the indicated action, e.g., "deviceId", "loadId", "external triggers". <br><br> An example implementation can be found in [7.3.1 Format of action parameters]((#731-format-of-action-parameters)).
