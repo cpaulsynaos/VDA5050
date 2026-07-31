@@ -22,7 +22,7 @@ www.vda.de
 
 **Copyright**
 Association of the Automotive Industry (VDA)
-Reproduction and any other form of reproduction is only permitted with specification of the source.
+Reprint and any other form of reproduction is only permitted with specification of the source.
 
 Version 3.0.0
 
@@ -1688,7 +1688,7 @@ The shape of each zone object is defined through a polygon, which is communicate
 
 | **Object structure** | **Data type** | **Description** |
 | --------------------- | ------------- | ------------------- |
-| vertex{| JSON object| |
+| vertex {| JSON object| |
 | x | float64 | X-coordinate described in the project-specific coordinate system |
 | y <br>} | float64 | Y-coordinate described in the project-specific coordinate system |
 
@@ -1715,7 +1715,7 @@ version | | string | Version of the protocol [Major].[Minor].[Patch] (e.g., 1.3.
 manufacturer | | string | Manufacturer of the mobile robot.
 serialNumber | | string | Serial number of the mobile robot.
 ***maps[map]*** | | array | Array of map objects that are currently stored on the mobile robot.
-***zoneSets[zoneSet]*** | | Array of zoneSet | Array of zoneSet objects that are currently stored on the mobile robot.
+***zoneSets[zoneSet]*** | | array | Array of zoneSet objects that are currently stored on the mobile robot.
 orderId| | string | Unique order identification of the current order or the previously finished order. <br>The orderId is kept until a new order is received. <br>Empty string (""), if no previous orderId is available.
 orderUpdateId | | uint32 | Order update identification to identify, that an order update has been accepted by the mobile robot. <br>"0" if no previous orderUpdateId is available.
 lastNodeId | | string | Node ID of last reached node or, if the mobile robot is currently on a node, current node (e.g., "node7"). Empty string (""), if no `lastNodeId` is available.
@@ -1725,7 +1725,7 @@ lastNodeSequenceId | | uint32 | Sequence ID of the last reached node or, if the 
 ***plannedPath*** | | JSON object | Represents a path within the robot's currently active order as NURBS.
 ***intermediatePath*** | | JSON object | Represents the estimated time of arrival at closer waypoints that the mobile robot is able to perceive with its sensors.
 ***mobileRobotPosition*** | | JSON object | Current position of the mobile robot on the map.<br><br>Optional: Can only be omitted for mobile robots without the capability to localize themselves, e.g., line-guided mobile robots.
-***velocity*** | | JSON object | The mobile robot velocity in its coordinates.
+***velocity*** | | JSON object | The mobile robot velocity in mobile robot coordinates.
 ***loads [load]*** | | array | Loads, that are currently handled by the mobile robot.<br><br>Optional: If the mobile robot cannot determine the load state, this field shall be omitted completely and not be reported as an empty array. <br>If the mobile robot can determine the load state, but the array is empty, the mobile robot is considered unloaded.
 driving | | boolean | "true": indicates, that the mobile robot is driving (manual or automatic). Other movements (e.g., lift movements) are not included here.<br>"false": indicates that the mobile robot is not driving.
 *paused* | | boolean | "true": the mobile robot is currently in a paused state, either because of the push of a physical button on the mobile robot or because of an instantAction. <br>The mobile robot can resume the order.<br><br>"false": the mobile robot is currently not in a paused state.
@@ -1752,14 +1752,14 @@ mapStatus | | string | Enum {'ENABLED', 'DISABLED'}<br>'ENABLED': Indicates this
 
 Object structure | Unit | Data type | Description
 ---|---|---|---
-**zoneSet**{ | | JSON object|
+**zoneSet** { | | JSON object|
 zoneSetId | | string | Unique identifier of the zone set that is currently enabled for the map.<br> This field shall be left empty only if the mobile robot has no zones defined for the corresponding map.
 mapId | | string | Identifier of the corresponding map.
-zoneSetStatus <br>}| | string | Enum {ENABLED, DISABLED}<br>'ENABLED': Indicates this zone set is currently actively used on the mobile robot. At most one zone set for each map can have its status set to 'ENABLED' .<br>'DISABLED': Indicates this zone set is currently not enabled on the mobile robot and thus could be enabled or deleted by fleet control.
+zoneSetStatus <br>}| | string | Enum {'ENABLED', 'DISABLED'}<br>'ENABLED': Indicates this zone set is currently actively used on the mobile robot. At most one zone set for each map can have its status set to 'ENABLED' .<br>'DISABLED': Indicates this zone set is currently not enabled on the mobile robot and thus could be enabled or deleted by fleet control.
 
 Object structure | Unit | Data type | Description
 ---|---|---|---
-**nodeState** { | JSON object | |
+**nodeState** { | | JSON object |
 nodeId | | string | Unique identifier of the node. <br>The same node can be referenced multiple times within one state message. `sequenceId` is used to differentiate the sequence of traversal.
 sequenceId | | uint32 | `sequenceId` of the node to discern multiple nodes with same nodeId.
 *nodeDescriptor* | | string | A user-defined, human-readable name or descriptor. This shall not be used for logical purposes.
@@ -1829,9 +1829,9 @@ Object structure | Unit | Data type | Description
 **mobileRobotPosition** { | | JSON object | Defines the position on a map in project-specific coordinates. Each floor has its own map.
 x | m | float64 | X-position on the map in reference to the project-specific coordinate system. <br>Precision is up to the specific implementation.
 y | m | float64 | Y-position on the map in reference to the project-specific coordinate system. <br>Precision is up to the specific implementation.
-theta | | float64 | Range: [-Pi ... Pi]<br><br>Orientation of the mobile robot.
+theta | rad | float64 | Range: [-Pi ... Pi]<br><br>Orientation of the mobile robot.
 mapId | | string | Unique identification of the map in which the position is referenced.<br><br>Each map has the same origin of coordinates.<br>When a mobile robot uses an elevator from a departure floor to a destination floor, it leaves the map of the departure floor and spawns on the corresponding elevator node on the map of the destination floor.
-localized | | boolean | "true": Mobile robot is localized. `x`, `y`, and `theta` can be trusted.<br>"false": Mobile robot is not localized. `x`, `y`, and `theta` cannot be trusted.<br>Changing to the state to "false" shall only happen if the mobile robot cannot determine its position anymore. The mobile robot shall report this state via an error (`errorType` = 'LOCALIZATION_ERROR', `errorLevel` = 'FATAL'). While this is set to "false", the mobile robot shall not resume automatic driving or continue its order.
+localized | | boolean | "true": Mobile robot is localized. `x`, `y`, and `theta` can be trusted.<br>"false": Mobile robot is not localized. `x`, `y`, and `theta` cannot be trusted.<br>Changing the state to "false" shall only happen if the mobile robot cannot determine its position anymore. The mobile robot shall report this state via an error (`errorType` = 'LOCALIZATION_ERROR', `errorLevel` = 'FATAL'). While this is set to "false", the mobile robot shall not resume automatic driving or continue its order.
 *localizationScore* | | float64 | Range: [0.0 ... 1.0]<br>Describes the quality of the localization and can therefore be used, e.g., by SLAM mobile robots to describe how accurate the current position information is.<br>0.0: lowest possible confidence<br>1.0: highest possible confidence.<br>Only for logging and visualization purposes.
 *deviationRange* | m | float64 | Value for the deviation range of the position in meters.<br>Only for logging and visualization purposes.
 } | | |
@@ -1858,8 +1858,10 @@ Object structure | Unit | Data type | Description
 **boundingBoxReference** { | | JSON object | Point of reference for the location of the bounding box. <br>The point of reference is always the center of the bounding box's bottom surface (at height = 0) and is described in coordinates of the mobile robot's coordinate system.
 x | | float64 | X-coordinate of the point of reference.
 y | | float64 | Y-coordinate of the point of reference.
-z | | float 64 | Z-coordinate of the point of reference.
-*theta*<br> } | | float64 | Orientation of the loads bounding box. <br>Important for tuggers, trains, etc.
+x | m | float64 | X-coordinate of the point of reference.
+y | m | float64 | Y-coordinate of the point of reference.
+z | m | float64 | Z-coordinate of the point of reference.
+*theta*<br> } | | float64 | Orientation of the load's bounding box. <br>Important for tuggers, trains, etc.
 
 Object structure | Unit | Data type | Description
 ---|---|---|---
@@ -1876,7 +1878,7 @@ width | m | float64 | Absolute width (along the mobile robot’s coordinate syst
 | zoneId | string | Locally (within the zone set) unique identifier referencing the zone the request is related to. |
 | zoneSetId | string | Due to the `zoneId` only being unique to a `zoneSet`, the `zoneSetId` is part of the request. |
 | requestStatus | string | Enum {'REQUESTED', 'GRANTED', 'REVOKED', 'EXPIRED'}<br>When stating a request, this is set to 'REQUESTED'. After response or update from fleet control set to 'GRANTED' or 'REVOKED'. If lease time expires set to 'EXPIRED'.|
-| ***trajectory*** <br> } | object | Optional for 'COORDINATED_REPLANNING' requests only with the planned trajectory through the zone. |
+| ***trajectory*** <br> } | object | Optional for 'COORDINATED_REPLANNING' zone requests only with the planned trajectory through the zone. |
 
 | **Object structure** | **Data type** | **Description** |
 | --- | --- | --- |
@@ -1903,7 +1905,7 @@ stateOfCharge | % | float64 | Range: [0 ... 100]<br><br>State of charge of the m
 *batteryVoltage* | V | float64 | Battery voltage.
 *batteryCurrent* | A | float64 | Battery current.
 *batteryHealth* | % | int8 | Range: [0 ... 100]<br><br>State describing the battery's health. 
-charging | | boolean | “true”: charging in progress.<br>“false”: the mobile robot is currently not charging. Shall only be reported as "false" if the robot is available to take orders.
+charging | | boolean | "true": charging in progress.<br>"false": the mobile robot is currently not charging. Shall only be reported as "false" if the robot is available to take orders.
 *range* <br>}| m | uint32 | Range: [0 ... uint32.max]<br><br>Estimated distance to drive with current state of charge. 
 
 Object structure | Unit | Data type | Description
@@ -1933,7 +1935,7 @@ Object structure | Unit | Data type | Description
 ---|---|---|---
 **info** { | | JSON object |
 infoType | | string | Type/name of information.
-*infoReferences [infoReference]* | | array | Array of references.
+***infoReferences [infoReference]*** | | array | Array of references.
 *infoDescriptor* | | string | A user-defined, human-readable name or descriptor. This shall not be used for logical purposes.
 infoLevel <br>}| | string | Enum {'DEBUG', 'INFO'}<br><br>'DEBUG': used for debugging.<br> 'INFO': used for visualization.
 
@@ -1947,7 +1949,7 @@ Object structure | Unit | Data type | Description
 ---|---|---|---
 **safetyState** { | | JSON object |
 activeEmergencyStop | | string | Enum {'MANUAL', 'REMOTE', 'NONE'}<br><br> Defining what type of emergency stop has been activated: <br>'MANUAL': emergency stop shall be acknowledged manually on the mobile robot.<br>'REMOTE': facility emergency stop shall be acknowledged remotely.<br>'NONE': no emergency stop activated.
-fieldViolation<br>} | | boolean | Protective field violation (e.g., by laser or bumper).<br>"true":field is violated<br>"false":field is not violated.
+fieldViolation<br>} | | boolean | Protective field violation (e.g., by laser or bumper).<br>"true": field is violated<br>"false": field is not violated.
 
 
 ## 7.9 Implementation of the visualization message
@@ -2037,7 +2039,7 @@ If a parameter is not defined or set to zero then there is no explicit limit for
 | &emsp;*order.edges* | uint32 | Maximum number of edges per order processable by the mobile robot. |
 | &emsp;*node.actions* | uint32 | Maximum number of actions per node processable by the mobile robot. |
 | &emsp;*edge.actions* | uint32 | Maximum number of actions per edge processable by the mobile robot. |
-| &emsp;*actions.actionsParameters* | uint32 | Maximum number of parameters per action processable by the mobile robot. |
+| &emsp;*action.actionsParameters* | uint32 | Maximum number of parameters per action processable by the mobile robot. |
 | &emsp;*instantActions* | uint32 | Maximum number of instant actions per message processable by the mobile robot. |
 | &emsp;*trajectory.knotVector* | uint32 | Maximum number of knots per trajectory processable by the mobile robot. |
 | &emsp;*trajectory.controlPoints* | uint32 | Maximum number of control points per trajectory processable by the mobile robot. |
@@ -2066,11 +2068,11 @@ This JSON object defines order handling processes, actions and parameters which 
 
 | **Field** | **data type** | **description** |
 |---|---|---|
-| **optionalParameters** [**optionalParameters**] | array | Array of supported and/or required optional parameters.<br>Optional parameters that are not listed here are assumed to be not supported by the mobile robot. |
+| **optionalParameters** [**optionalParameter**] | array | Array of supported and/or required optional parameters.<br>Optional parameters that are not listed here are assumed to be not supported by the mobile robot. |
 | { | | |
 | &emsp;parameter | string | Full name of optional parameter, e.g., "*order.nodes.nodePosition.allowedDeviationTheta"*.|
 | &emsp;support | enum | Type of support for the optional parameter, the following values are possible:<br>'SUPPORTED': optional parameter is supported like specified.<br>'REQUIRED': optional parameter is required for proper mobile robot operation. |
-| &emsp;*description*| string | Free-form text: description of optional parameter, e.g., <ul><li>Reason, why the optional parameter direction is necessary for this mobile robot type and which values it can contain.</li><li>The parameter nodeMarker shall contain unsigned integers only.</li><li>NURBS support is limited to straight lines and circle segments.</li>|
+| &emsp;*description*| string | Free-form text: description of optional parameter, e.g., <ul><li>Reason, why the optional parameter direction is necessary for this mobile robot type and which values it can contain.</li><li>The parameter nodeMarker shall contain unsigned integers only.</li><li>NURBS support is limited to straight lines and circle segments.</li></ul>|
 | } | | |
 | **mobileRobotActions** [**mobileRobotAction**] | array | Array of all actions with parameters supported by this mobile robot. This includes standard actions specified in VDA5050 and manufacturer-specific actions. |
 | { | | |
@@ -2085,12 +2087,12 @@ This JSON object defines order handling processes, actions and parameters which 
 |&emsp;&emsp;*isOptional* | boolean | "true": optional parameter. |
 |&emsp;*}* | | |
 |*actionResult* | string | Free-form text: description of the result. |
-|*blockingTypes* | array of enum | Array of possible blocking types for defined action. <br> Enum {'NONE', 'SOFT', 'SINGLE', 'HARD'} |
+|*blockingTypes* | array of enum | Array of possible blocking types for defined action. <br> Enum {'NONE', 'SINGLE', 'SOFT', 'HARD'} |
 |pauseAllowed | boolean | "true": action can be paused via startPause, "false": action cannot be paused. |
 |cancelAllowed | boolean | "true": action can be cancelled via cancelOrder, "false": action cannot be cancelled. |
 |*}* | | |
 
-### mobileRobotGeometry
+#### mobileRobotGeometry
 
 This JSON object defines the geometry properties of the mobile robot, e.g., outlines and wheel positions.
 
@@ -2141,7 +2143,7 @@ This JSON object specifies load handling and supported load types of the mobile 
 | { | | |
 |&emsp; setName | string | Unique name of the load set, e.g., DEFAULT, SET1, etc. |
 |&emsp; loadType | string | Type of load, e.g., EPAL, XLT1200, etc. |
-|&emsp; *loadPositions* | array of string | Array of load positions btw. load handling devices, this load set is valid for.<br>*If this parameter does not exist or is empty, this load set is valid for all load handling devices on this mobile robot.* |
+|&emsp; *loadPositions* | array of string | Array of load positions or load handling devices, this load set is valid for.<br>*If this parameter does not exist or is empty, this load set is valid for all load handling devices on this mobile robot.* |
 |&emsp; ***boundingBoxReference*** | JSON object | Bounding box reference as defined in parameter loads[] in state message. |
 |&emsp; ***loadDimensions*** | JSON object | Load dimensions as defined in parameter loads[] in state message. |
 |&emsp; *maximumWeight* | float64 | [kg], maximum weight of load type. |
@@ -2165,7 +2167,8 @@ This JSON object details the software and hardware versions running on the mobil
 
 | **Field** | **data type** | **description** |
 |---|---|---|
-| ***versions[versionInfo]*** | array | Array of key-value pair objects containing software and hardware information.| | { | | |
+| ***versions[versionInfo]*** | array | Array of key-value pair objects containing software and hardware information.|
+| { | | |
 |&emsp; key | string | Key of the software/hardware version used. (e.g., softwareVersion) |
 |&emsp; value | string | The version corresponding to the key. (e.g., v1.12.4-beta) |
 | } | | |
@@ -2180,7 +2183,10 @@ This JSON object details the software and hardware versions running on the mobil
 | *criticalLowChargingLevel* | float64 | Specifies the critical charging level in percent at or below which the fleet control should only send orders that command the mobile robot to a charging station. |
 | *maximumDesiredChargingLevel* | float64 | Specifies the maximum desired charging level in percent. |
 | *minimumDesiredChargingLevel* | float64 | Specifies the minimum desired charging level in percent. |
-| *minimumChargingTime* | uint32 | Specifies the desired minimum charging time in seconds. |
+| &emsp;*criticalLowChargingLevel* | float64 | Specifies the critical charging level in percent at or below which the fleet control should only send orders that command the mobile robot to a charging station. |
+| &emsp;*maximumDesiredChargingLevel* | float64 | Specifies the maximum desired charging level in percent. |
+| &emsp;*minimumDesiredChargingLevel* | float64 | Specifies the minimum desired charging level in percent. |
+| &emsp;*minimumChargingTime* | uint32 | Specifies the desired minimum charging time in seconds. |
 | &emsp;} | | |
 
 # Bibliography
