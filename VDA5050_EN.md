@@ -1753,7 +1753,7 @@ mapStatus | | string | Enum {'ENABLED', 'DISABLED'}<br>'ENABLED': Indicates this
 Object structure | Unit | Data type | Description
 ---|---|---|---
 **zoneSet** { | | JSON object|
-zoneSetId | | string | Unique identifier of the zone set that is currently enabled for the map.<br> This field shall be left empty only if the mobile robot has no zones defined for the corresponding map.
+zoneSetId | | string | Unique identifier of the zone set.
 mapId | | string | Identifier of the corresponding map.
 zoneSetStatus <br>}| | string | Enum {'ENABLED', 'DISABLED'}<br>'ENABLED': Indicates this zone set is currently actively used on the mobile robot. At most one zone set for each map can have its status set to 'ENABLED' .<br>'DISABLED': Indicates this zone set is currently not enabled on the mobile robot and thus could be enabled or deleted by fleet control.
 
