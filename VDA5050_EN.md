@@ -1632,7 +1632,7 @@ Object structure/Identifier | Data type | Description
 | --- | --- | --- |
 | response <br> { | JSON object | Object which contains the fleet control's answer to a specific request. |
 | requestId | string | Unique per mobile robot identifier within all active requests. |
-| grantType | enum | Enum {'GRANTED','QUEUED','REVOKED','REJECTED'}<br>'GRANTED': The fleet control has granted the request.<br> 'QUEUED': Acknowledge the mobile robot's request to the fleet control, but no permission is given yet. Request was added to some sort of a queue.<br> 'REVOKED': The fleet control revokes previously granted request.<br> 'REJECTED': The Fleet control rejects a request. |
+| grantType | string | Enum {'GRANTED','QUEUED','REVOKED','REJECTED'}<br>'GRANTED': The fleet control has granted the request.<br> 'QUEUED': Acknowledge the mobile robot's request to the fleet control, but no permission is given yet. Request was added to some sort of a queue.<br> 'REVOKED': The fleet control revokes previously granted request.<br> 'REJECTED': The Fleet control rejects a request. |
 | *leaseExpiry* <br><br> } | string | Timestamp (ISO 8601, UTC); YYYY-MM-DDTHH:mm:ss.fffZ (e.g., “2017-04-15T11:40:03.123Z”). A timestamp for the release to expire shall only be sent with responses granting a request.
 
 
@@ -1887,10 +1887,10 @@ width | m | float64 | Absolute width (along the mobile robot’s coordinate syst
 | --- | --- | --- |
 | edgeRequest <br> { | JSON object | Request information sent by the mobile robot to fleet control. |
 | requestId | string | Unique per mobile robot identifier within all active requests. |
-| requestType | enum | Enum {'CORRIDOR'}<br> Enum specifying the type of request. Set to CORRIDOR if requesting to deviate from the predefined trajectory within the defined work space. |
+| requestType | string | Enum {'CORRIDOR'}<br> Enum specifying the type of request. Set to CORRIDOR if requesting to deviate from the predefined trajectory within the defined work space. |
 | edgeId | string | Globally unique identifier referencing the edge the request is related to. |
 | sequenceId | uint32 | Tracking number for sequence of edge within order. Required to uniquely identify the referenced edge within the order. |
-| requestStatus <br><br> } | enum | Enum {'REQUESTED', 'GRANTED', 'REVOKED', 'EXPIRED'}<br>When stating a request, this is set to 'REQUESTED'. After response or update from fleet control set to 'GRANTED' or 'REVOKED'. If lease time expires set to 'EXPIRED'.|
+| requestStatus <br><br> } | string | Enum {'REQUESTED', 'GRANTED', 'REVOKED', 'EXPIRED'}<br>When stating a request, this is set to 'REQUESTED'. After response or update from fleet control set to 'GRANTED' or 'REVOKED'. If lease time expires set to 'EXPIRED'.|
 
 Object structure | Unit | Data type | Description
 ---|---|---|---
@@ -1914,7 +1914,7 @@ charging | | boolean | "true": charging in progress.<br>"false": the mobile robo
 Object structure | Unit | Data type | Description
 ---|---|---|---
 **error** { | | JSON object |
-errorType | | string | Error type, extensible enumeration including the following predefined values <br>Enum {'UNSUPPORTED_PARAMETER', 'NO_ORDER_TO_CANCEL', 'VALIDATION_FAILURE', 'INVALID_ORDER_ACTION', 'OUTDATED_ORDER_UPDATE', 'SAME_ORDER_UPDATE_ID', 'ORDER_UPDATE_FOLLOWING_CANCEL', 'OUTSIDE_OF_CORRIDOR', 'INSUFFICIENT_MEMORY', 'DUPLICATE_MAP', 'BLOCKED_ZONE_VIOLATION', 'DUPLICATE_ZONE_SET', 'RELEASE_LOSS_HANDLING','RELEASE_LOST', 'ZONE_ACTION_CONFLICT', 'NODE_UNREACHABLE', 'LOCALIZATION_ERROR', 'OTHER_ORDER_ACTIVE', 'START_NODE_OUT_OF_RANGE', 'MOBILE_ROBOT_NOT_AVAILABLE', 'UNKNOWN_MAP_ID', 'INSTANT_ACTION_STATES_FULL', 'ZONE_ACTION_STATES_FULL', ...}.
+errorType | | string | Error type, extensible enumeration including the following predefined values <br>Extensible enum: {'UNSUPPORTED_PARAMETER', 'NO_ORDER_TO_CANCEL', 'VALIDATION_FAILURE', 'INVALID_ORDER_ACTION', 'OUTDATED_ORDER_UPDATE', 'SAME_ORDER_UPDATE_ID', 'ORDER_UPDATE_FOLLOWING_CANCEL', 'OUTSIDE_OF_CORRIDOR', 'INSUFFICIENT_MEMORY', 'DUPLICATE_MAP', 'BLOCKED_ZONE_VIOLATION', 'DUPLICATE_ZONE_SET', 'RELEASE_LOSS_HANDLING','RELEASE_LOST', 'ZONE_ACTION_CONFLICT', 'NODE_UNREACHABLE', 'LOCALIZATION_ERROR', 'OTHER_ORDER_ACTIVE', 'START_NODE_OUT_OF_RANGE', 'MOBILE_ROBOT_NOT_AVAILABLE', 'UNKNOWN_MAP_ID', 'INSTANT_ACTION_STATES_FULL', 'ZONE_ACTION_STATES_FULL', ...}.
 ***errorReferences [errorReference]*** | | array | Array of references (e.g., `nodeId`, `edgeId`, `orderId`, `actionId`, etc.) to provide more information related to the error.
 *errorDescription* | | string | Verbose description providing details and possible causes of the error.
 ***errorDescriptionTranslations[translation]*** || array | Array of translations of the error description. If a particular language is not included in the collection, the value of the errorDescription field, if present, shall be used as the default. 
@@ -2074,23 +2074,23 @@ This JSON object defines order handling processes, actions and parameters which 
 | **optionalParameters** [**optionalParameter**] | array | Array of supported and/or required optional parameters.<br>Optional parameters that are not listed here are assumed to be not supported by the mobile robot. |
 | { | | |
 | &emsp;parameter | string | Full name of optional parameter, e.g., "*order.nodes.nodePosition.allowedDeviationTheta"*.|
-| &emsp;support | enum | Type of support for the optional parameter, the following values are possible:<br>'SUPPORTED': optional parameter is supported like specified.<br>'REQUIRED': optional parameter is required for proper mobile robot operation. |
+| &emsp;support | string | Type of support for the optional parameter, the following values are possible:<br>'SUPPORTED': optional parameter is supported like specified.<br>'REQUIRED': optional parameter is required for proper mobile robot operation. |
 | &emsp;*description*| string | Free-form text: description of optional parameter, e.g., <ul><li>Reason, why the optional parameter direction is necessary for this mobile robot type and which values it can contain.</li><li>The parameter nodeMarker shall contain unsigned integers only.</li><li>NURBS support is limited to straight lines and circle segments.</li></ul>|
 | } | | |
 | **mobileRobotActions** [**mobileRobotAction**] | array | Array of all actions with parameters supported by this mobile robot. This includes standard actions specified in VDA5050 and manufacturer-specific actions. |
 | { | | |
 | &emsp;actionType | string | Unique type of action corresponding to action.actionType. |
 | &emsp;*actionDescription* | string | Free-form text: description of the action. |
-| &emsp;actionScopes | array of enum | Array of allowed scopes for using this action type.<br><br>'INSTANT': usable as instantAction.<br>'NODE': usable on nodes.<br>'EDGE': usable on edges.<br>'ZONE': usable as zone action.<br><br>For example: ['INSTANT', 'NODE']|
+| &emsp;actionScopes | array of string | Array of allowed scopes for using this action type.<br><br>'INSTANT': usable as instantAction.<br>'NODE': usable on nodes.<br>'EDGE': usable on edges.<br>'ZONE': usable as zone action.<br><br>For example: ['INSTANT', 'NODE']|
 | &emsp;***actionParameters** [**actionParameter**]* | array | Array of parameters an action has.<br>If not defined, the action has no parameters.<br> The JSON object defined here is a different JSON object than the one used in Section [7.3 Implementation of the order message](#73-implementation-of-the-order-message) within nodes and edges.|
 |&emsp;*{* | | |
 |&emsp;&emsp;key | string | Key string for parameter. |
-|&emsp;&emsp;valueDataType | enum | Data type of value, possible data types are: 'BOOL', 'NUMBER', 'INTEGER', 'STRING', 'OBJECT', 'ARRAY'. |
+|&emsp;&emsp;valueDataType | string | Data type of value, possible data types are: 'BOOL', 'NUMBER', 'INTEGER', 'STRING', 'OBJECT', 'ARRAY'. |
 |&emsp;&emsp;*description* | string | Free-form text: description of the parameter. |
 |&emsp;&emsp;*isOptional* | boolean | "true": optional parameter. |
 |&emsp;*}* | | |
 |&emsp;*actionResult* | string | Free-form text: description of the result. |
-|&emsp;*blockingTypes* | array of enum | Array of possible blocking types for defined action. <br> Enum {'NONE', 'SINGLE', 'SOFT', 'HARD'} |
+|&emsp;*blockingTypes* | array of string | Array of possible blocking types for defined action. <br> Enum {'NONE', 'SINGLE', 'SOFT', 'HARD'} |
 |&emsp;pauseAllowed | boolean | "true": action can be paused via startPause, "false": action cannot be paused. |
 |&emsp;cancelAllowed | boolean | "true": action can be cancelled via cancelOrder, "false": action cannot be cancelled. |
 |*}* | | |
