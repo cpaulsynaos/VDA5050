@@ -2042,7 +2042,7 @@ If a parameter is not defined or set to zero then there is no explicit limit for
 | &emsp;*order.edges* | uint32 | Maximum number of edges per order processable by the mobile robot. |
 | &emsp;*node.actions* | uint32 | Maximum number of actions per node processable by the mobile robot. |
 | &emsp;*edge.actions* | uint32 | Maximum number of actions per edge processable by the mobile robot. |
-| &emsp;*action.actionsParameters* | uint32 | Maximum number of parameters per action processable by the mobile robot. |
+| &emsp;*action.actionParameters* | uint32 | Maximum number of parameters per action processable by the mobile robot. |
 | &emsp;*instantActions* | uint32 | Maximum number of instant actions per message processable by the mobile robot. |
 | &emsp;*trajectory.knotVector* | uint32 | Maximum number of knots per trajectory processable by the mobile robot. |
 | &emsp;*trajectory.controlPoints* | uint32 | Maximum number of control points per trajectory processable by the mobile robot. |
