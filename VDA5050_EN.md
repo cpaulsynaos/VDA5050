@@ -1042,7 +1042,6 @@ The following events shall trigger a transmission of the `state` message:
 
 - Receiving an order
 - Receiving an order update
-- Changes in the `load` object
 - Change in the `errors` array
 - Change in the `operatingMode` field
 - Change in the `driving` field
