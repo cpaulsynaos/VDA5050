@@ -178,7 +178,7 @@ Participants in the MQTT network subscribe to these topics and receive informati
 
 The JSON format allows for future extensions of the protocol with additional parameters as well as validation against schemas.
 
-### 4.1 Connection handling, security and QoS
+## 4.1 Connection handling, security and QoS
 
 The MQTT protocol provides the option of setting a last will message for a client.
 If the client disconnects unexpectedly for any reason, the last will is distributed by the broker to other subscribed clients.
@@ -191,7 +191,7 @@ To reduce the communication overhead, the MQTT QoS level 0 (Best Effort) shall b
 Protocol security needs to be taken into account by broker configuration, but is not addressed within this guideline.
 
 
-### 4.2 Topic levels
+## 4.2 Topic levels
 
 The MQTT topic structure is not strictly defined due to the mandatory topic structure of cloud providers.
 For a cloud-based MQTT broker the topic structure might have to be adapted individually, but it should roughly follow the proposed structure.
@@ -219,7 +219,7 @@ topic | string | Topic (e.g., `order` or `state`) see Section [4.3 Topics for Co
 Since the `/` character is used to define topic hierarchies, it shall not be used in any of the aforementioned fields.
 Wildcard characters `+` and `#` as well as the character `$` that is reserved for broker internal topics should not be used either.
 
-### 4.3 Topics for communication
+## 4.3 Topics for communication
 
 The protocol uses the following topics for information exchange between fleet control and mobile robots.
 
@@ -259,14 +259,9 @@ During the implementation phase, the DTS consisting of fleet control and mobile 
 The necessary framework conditions are defined by the operator and the required information is either entered manually by them or stored in the fleet control by importing from other systems.
 Essentially, this concerns the following content:
 
-- Definition of routes:
-Using the Layout Interchange Format (LIF), routes can be imported to the fleet control. The LIF is a file format of track layouts for exchange between the integrator of the driverless transport mobile robots and a (third-party) fleet control system (LIF – Layout Interchange Format, VDMA 2024-03).
-Alternatively, routes can also be implemented manually in the fleet control by the operator.
-Routes can be one-way streets, restricted for certain mobile robot groups (based on the size ratios), etc.
-- Route network configuration:
-Within the routes, stations for loading and unloading, battery charging stations, peripheral environments (gates, elevators, barriers), waiting positions, buffer stations, etc. are defined.
-- Mobile robot configuration: The physical properties of a mobile robot (size, available load carrier mounts, etc.) are stored by the operator.
-The mobile robot shall communicate this information via the topic `factsheet` in a specific way that is defined in Section [7.10 Implementation of the factsheet message](#710-implementation-of-the-factsheet-message) of this document.
+- Definition of routes: Using the Layout Interchange Format (LIF), routes can be imported to the fleet control. The LIF is a file format of track layouts for exchange between the integrator of the driverless transport mobile robots and a (third-party) fleet control system (LIF – Layout Interchange Format, VDMA 2024-03). Alternatively, routes can also be implemented manually in the fleet control by the operator. Routes can be one-way streets, restricted for certain mobile robot groups (based on the size ratios), etc.
+- Route network configuration: Within the routes, stations for loading and unloading, battery charging stations, peripheral environments (gates, elevators, barriers), waiting positions, buffer stations, etc. are defined.
+- Mobile robot configuration: The physical properties of a mobile robot (size, available load carrier mounts, etc.) are stored by the operator. The mobile robot shall communicate this information via the topic `factsheet` in a specific way that is defined in Section [7.10 Implementation of the factsheet message](#710-implementation-of-the-factsheet-message) of this document.
 
 The configuration of routes and the route network described above are not part of this document.
 They form the basis for enabling order control and driving course assignment by the fleet control based on this information and the transport requirements to be completed.
@@ -436,14 +431,11 @@ Figure 8 describes the process of accepting an order or order update.
 ![Figure 8 The process of accepting an order or orderUpdate](./assets/process_order_update.png)
 >Figure 8 - The process of accepting an order or order update.
 
-1) **Is received order valid?**:
-All formatting and JSON data types are correct?
+1) **Is received order valid?**: All formatting and JSON data types are correct?
 
-2) **Is received order new or an update of the current order?**:
-Is `orderId` of the received order different to `orderId` of the order the mobile robot currently holds?
+2) **Is received order new or an update of the current order?**: Is `orderId` of the received order different to `orderId` of the order the mobile robot currently holds?
 
-3) **Is mobile robot idle and not waiting for an update?**:
-Is the mobile robot in an idle state according to [6.6.8 Idle state of the mobile robot](#668-idle-state-of-the-mobile-robot) and not waiting for an update? Since nodes and edges and the corresponding action states of the order horizon are also included inside the state, the mobile robot might still have a horizon and therefore is waiting for an update and executing an order.
+3) **Is mobile robot idle and not waiting for an update?**: Is the mobile robot in an idle state according to [6.6.8 Idle state of the mobile robot](#668-idle-state-of-the-mobile-robot) and not waiting for an update? Since nodes and edges and the corresponding action states of the order horizon are also included inside the state, the mobile robot might still have a horizon and therefore is waiting for an update and executing an order.
 
 4) **Is OrderUpdateId 0?**: Is the `orderUpdateId` of the new order 0?
 
@@ -455,7 +447,7 @@ Is the mobile robot in an idle state according to [6.6.8 Idle state of the mobil
 
 8) **Is received order update currently on mobile robot?**: Is `orderUpdateId` equal to the one currently on the mobile robot?
 
-9) **Is the received update a valid continuation of the currently still running order?**:	Is the first node of the received order the current decision point according to the order update chapter? The mobile robot is still moving or executing actions related to the base released in previous order updates or still has a horizon and is therefore waiting for a continuation of the order. In this case, the order update is only accepted if the first node of the new base is equal to the last node of the previous base.
+9) **Is the received update a valid continuation of the currently still running order?**: Is the first node of the received order the current decision point according to the order update chapter? The mobile robot is still moving or executing actions related to the base released in previous order updates or still has a horizon and is therefore waiting for a continuation of the order. In this case, the order update is only accepted if the first node of the new base is equal to the last node of the previous base.
 
 10) **Is the received update a valid continuation of the previously completed order?**: Is the first node of the received order the current decision point according to the order update chapter? The mobile robot is not executing any actions anymore nor is it waiting for a continuation of the order (meaning that it has completed its base with all related actions and does not have a horizon). In this case, the order update is only accepted if the first node of the new base is equal to the last node of the previous base.
 
@@ -1042,19 +1034,19 @@ The following events shall trigger a transmission of the `state` message:
 
 - Receiving an order
 - Receiving an order update
-- Change in the `errors` array
 - Change in the `operatingMode` field
 - Change in the `driving` field
 - Change in the `paused` field
-- Change in the `safetyState` object
 - Change in the `newBaseRequest` field
 - Change in the `lastNodeId` or `lastNodeSequenceId` field
-- Change in the `edgeRequests` or `zoneRequests` arrays
 - Change in the `powerSupply.charging` field
+- Change in the `safetyState` object
+- Change in the `errors` array
 - Change in the `nodeStates` or `edgeStates` arrays
+- Change in the `edgeRequests` or `zoneRequests` arrays
 - Change in the `actionStates`, `instantActionStates` or `zoneActionStates` arrays
 - Change in the `zoneSets` array
-- Changes in the `loads` array
+- Change in the `loads` array
 - Change in the `maps` array
 
 *Remark: For above mentioned arrays, changes in the individual items of the array as well as adding or removing entries shall trigger a `state` message transmission.*
@@ -1322,8 +1314,7 @@ Freely navigating mobile robots shall communicate their planned trajectory to th
 Mobile robots share their `intermediatePath`, which represents the estimated time of arrival at closer waypoints that the mobile robot is able to perceive with its sensors, and their `plannedPath`, which represents a longer path within the mobile robot's currently active order. Both paths shall start from the mobile robot's current position, independent of any nodes that are part of the order. The mobile robot can decide on the length of the shared paths, as it may be situation dependent. If the mobile robot is freely navigating, both `intermediatePath` and `plannedPath` shall be shared in each state.
 
 - The `plannedPath` is defined as NURBS as defined in the `trajectory` field of the `edgeState`. The `plannedPath` can contain an array of nodes, referenced by their `nodeId`, that will be traversed as part of the current path. It should be updated whenever a significant change has occurred in the mobile robot's `plannedPath`. The `plannedPath` shall at least cover the mobile robot's current base.
-- The `intermediatePath` is defined as a polyline. The polyline consists of linear line segments between waypoints. Each `waypoint` consists of its `x` and `y` position, an optional orientation of the mobile robot and the `eta` indicating the estimated time of arrival.
-The `intermediatePath` shall be updated with every sent `state` or `visualization` message and always begin at the mobile robot's current position.
+- The `intermediatePath` is defined as a polyline. The polyline consists of linear line segments between waypoints. Each `waypoint` consists of its `x` and `y` position, an optional orientation of the mobile robot and the `eta` indicating the estimated time of arrival. The `intermediatePath` shall be updated with every sent `state` or `visualization` message and always begin at the mobile robot's current position.
 
 The parameters `plannedPath` and `intermediatePath` shall be used only for trajectories planned by the mobile robot. The `trajectory` fields in the `edgeState` shall only be used to acknowledge trajectories that have already been defined a priori within a layout or the order.
 
@@ -1387,7 +1378,7 @@ All messages on this topic shall be sent with a `retained` flag.
 
 The different messages are presented in tables describing the contents of the fields of the JSON.
 
-In addition, JSON schemas are available for validation in the public git repository (https://github.com/VDA5050/VDA5050).
+In addition, JSON schemas are available for validation in the public git repository (<https://github.com/VDA5050/VDA5050>).
 The JSON schemas are updated with every release of the VDA5050. If there are differences between the JSON schemas and this document, the variant in this document applies.
 
 
@@ -1670,7 +1661,7 @@ Object structure | Unit | Data type | Description
 actionType | | string | Name of action as described in the first column of table 4. <br> Identifies the function of the action.
 *actionDescriptor* | | string | A user-defined, human-readable name or descriptor. This shall not be used for logical purposes.
 blockingType | | string | Enum {'NONE', 'SINGLE', 'SOFT', 'HARD'}: <br> 'NONE': allows driving and other actions;<br> 'SINGLE': allows driving but no other actions;<br>'SOFT': allows other actions but not driving;<br>'HARD': is the only allowed action at that time.
-***actionParameters [actionParameter]*** | | array | Array of `actionParameter` objects for the indicated action, e.g., "deviceId", "loadId", "external triggers". <br><br> An example implementation can be found in [7.3.1 Format of action parameters]((#731-format-of-action-parameters)).
+***actionParameters [actionParameter]*** | | array | Array of `actionParameter` objects for the indicated action, e.g., "deviceId", "loadId", "external triggers". <br><br> An example implementation can be found in [7.3.1 Format of action parameters](#731-format-of-action-parameters).
 *retriable* <br> } | | boolean | "true": action can enter 'RETRIABLE' state if it fails.<br>"false": action enters 'FAILED' state directly after it fails.<br>Default: "false".
 
 The shape of each zone object is defined through a polygon, which is communicated through its vertices. A zone with less than three vertices is invalid and shall be rejected. The polygon is assumed as closed. Only simple polygons (i.e. without intersections) shall be used. The array of vertices defining a zone is provided as a list of x-y tuples in the globally defined project-specific coordinate system in a counterclockwise direction: 
@@ -1976,7 +1967,7 @@ Objects `plannedPath`, `intermediatePath`, `mobileRobotPosition` and `velocity` 
 | **loadSpecification** | JSON object | Abstract specification of load capabilities. |
 | ***mobileRobotConfiguration*** | JSON object | Summary of current software and hardware versions on the mobile robot and optional network information. |
 
-#### typeSpecification
+**typeSpecification**
 
 This JSON object describes general properties of the mobile robot type.
 
@@ -1991,7 +1982,7 @@ This JSON object describes general properties of the mobile robot type.
 | navigationTypes | array of string | Array of path planning types supported by the mobile robot, sorted by priority.<br>Extensible enum: {'PHYSICAL_LINE_GUIDED', 'VIRTUAL_LINE_GUIDED', 'FREELY_NAVIGATING', ...}<br>'PHYSICAL_LINE_GUIDED': no path planning, the mobile robot follows physical installed paths,<br>'VIRTUAL_LINE_GUIDED': the mobile robot follows fixed (virtual) paths,<br>'FREELY_NAVIGATING': the mobile robot plans its path by itself.|
 | *supportedZones* | array of string | Array of zone types supported by the mobile robot.<br>Enum {'BLOCKED', 'LINE_GUIDED', 'RELEASE', 'COORDINATED_REPLANNING', 'SPEED_LIMIT', 'ACTION', 'PRIORITY', 'PENALTY', 'DIRECTED', 'BIDIRECTED'}.
 
-#### physicalParameters
+**physicalParameters**
 
 This JSON object describes physical properties of the mobile robot.
 
@@ -2008,7 +1999,7 @@ This JSON object describes physical properties of the mobile robot.
 | width | float64 | [m] Width of the mobile robot. |
 | length | float64 | [m] Length of the mobile robot. |
 
-#### protocolLimits
+**protocolLimits**
 
 This JSON object describes the protocol limitations of the mobile robot.
 If a parameter is not defined or set to zero then there is no explicit limit for this parameter.
@@ -2051,7 +2042,7 @@ If a parameter is not defined or set to zero then there is no explicit limit for
 | &emsp;*visualizationInterval* | float32 | [s], Default interval for sending messages on `visualization` topic. |
 | } | | |
 
-#### protocolFeatures
+**protocolFeatures**
 
 This JSON object defines order handling processes, actions and parameters which are supported by the mobile robot.
 
@@ -2081,7 +2072,7 @@ This JSON object defines order handling processes, actions and parameters which 
 |&emsp;cancelAllowed | boolean | "true": action can be cancelled via `cancelOrder`, "false": action cannot be cancelled. |
 |*}* | | |
 
-#### mobileRobotGeometry
+**mobileRobotGeometry**
 
 This JSON object defines the geometry properties of the mobile robot, e.g., outlines and wheel positions.
 
@@ -2121,7 +2112,7 @@ This JSON object defines the geometry properties of the mobile robot, e.g., outl
 | &emsp;*description* | string | Free-form text: description of envelope curve set |
 | *}* | | |
 
-#### loadSpecification
+**loadSpecification**
 
 This JSON object specifies load handling and supported load types of the mobile robot.
 
@@ -2150,7 +2141,7 @@ This JSON object specifies load handling and supported load types of the mobile 
 |&emsp; *description* | string | Free-form text: description of the load handling set. |
 | } | | |
 
-#### mobileRobotConfiguration
+**mobileRobotConfiguration**
 
 This JSON object details the software and hardware versions running on the mobile robot, as well as a brief summary of network information.
 
