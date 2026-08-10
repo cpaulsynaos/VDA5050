@@ -2124,8 +2124,8 @@ This JSON object specifies load handling and supported load types of the mobile 
 |&emsp; setName | string | Unique name of the load set, e.g., DEFAULT, SET1, etc. |
 |&emsp; loadType | string | Type of load, e.g., EPAL, XLT1200, etc. |
 |&emsp; *loadPositions* | array of string | Array of load positions or load handling devices, this load set is valid for.<br>*If this parameter does not exist or is empty, this load set is valid for all load handling devices on this mobile robot.* |
-|&emsp; ***boundingBoxReference*** | JSON object | Bounding box reference as defined in the `loads` array in the `state` message. |
-|&emsp; ***loadDimensions*** | JSON object | Load dimensions as defined in the `loads` array in the `state` message. |
+|&emsp; ***boundingBoxReference*** | JSON object | Bounding box reference as defined in [7.8 Implementation of the state message](#78-implementation-of-the-state-message). |
+|&emsp; ***loadDimensions*** | JSON object | Load dimensions as defined in [7.8 Implementation of the state message](#78-implementation-of-the-state-message). |
 |&emsp; *maximumWeight* | float64 | [kg], maximum weight of load type. |
 |&emsp; *minimumLoadhandlingHeight* | float64 | [m], minimum allowed height for handling of this load type and weight<br>references to `boundingBoxReference`. |
 |&emsp; *maximumLoadhandlingHeight* | float64 | [m], maximum allowed height for handling of this load type and weight<br>references to `boundingBoxReference`. |
