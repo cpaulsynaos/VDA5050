@@ -493,7 +493,7 @@ There are two options:
 - The first node of the new order is a temporary node that is positioned at the mobile robot's current position. The mobile robot shall then recognize that this node is trivially reachable and accept the order.
 - The first node of the new order is the last traversed node of the previous order. The allowed deviation of this node is set large enough to ensure that the mobile robot is within this range. Thus, the mobile robot shall immediately treat this node as traversed and accept the order.
 
-#### 6.1.3.2 Receiving a cancelOrder action when mobile robot is idle
+#### 6.1.3.2 Receiving a cancelOrder action with no order to cancel
 
 If the mobile robot receives a `cancelOrder` instant action but the mobile robot is currently idle, or the `orderId` specified in the action does not match the `orderId` of the mobile robot’s currently active order, the `cancelOrder` action shall be reported as 'FAILED'.
 
