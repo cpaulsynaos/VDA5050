@@ -435,7 +435,7 @@ Figure 8 describes the process of accepting an order or order update.
 
 2) **Is received order new or an update of the current order?**: Is `orderId` of the received order different to `orderId` of the order the mobile robot currently holds?
 
-3) **Is mobile robot idle and not waiting for an update?**: Is the mobile robot in an idle state according to [6.6.8 Idle state of the mobile robot](#668-idle-state-of-the-mobile-robot) and not waiting for an update? Since nodes and edges and the corresponding action states of the order horizon are also included inside the state, the mobile robot might still have a horizon and therefore is waiting for an update and executing an order.
+3) **Is mobile robot idle and not waiting for an update?**: Is the mobile robot in an idle state according to [6.6.8 Idle state of the mobile robot](#668-idle-state-of-the-mobile-robot) and not waiting for an update? Note that the nodes, edges, and corresponding action states of the order horizon are also included in the state. A mobile robot that has finished executing its base but still has a horizon is therefore not idle — it is waiting for an order update.
 
 4) **Is OrderUpdateId 0?**: Is the `orderUpdateId` of the new order 0?
 
@@ -1609,7 +1609,7 @@ Object structure/Identifier | Data type | Description
 | --- | --- | --- |
 | response <br> { | JSON object | Object which contains the fleet control's answer to a specific request. |
 | requestId | string | Unique per mobile robot identifier within all active requests. |
-| grantType | string | Enum {'GRANTED','QUEUED','REVOKED','REJECTED'}<br>'GRANTED': The fleet control has granted the request.<br> 'QUEUED': Acknowledge the mobile robot's request to the fleet control, but no permission is given yet. Request was added to some sort of a queue.<br> 'REVOKED': The fleet control revokes previously granted request.<br> 'REJECTED': The Fleet control rejects a request. |
+| grantType | string | Enum {'GRANTED','QUEUED','REVOKED','REJECTED'}<br>'GRANTED': The fleet control has granted the request.<br> 'QUEUED': Acknowledge the mobile robot's request to the fleet control, but no permission is given yet. Request was added to some sort of a queue.<br> 'REVOKED': The fleet control revokes previously granted request.<br> 'REJECTED': The fleet control rejects a request. |
 | *leaseExpiry* <br><br> } | string | Timestamp (ISO 8601, UTC); YYYY-MM-DDTHH:mm:ss.fffZ (e.g., “2017-04-15T11:40:03.123Z”). A timestamp for the release to expire shall only be sent with responses granting a request.
 
 
