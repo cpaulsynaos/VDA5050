@@ -313,7 +313,7 @@ The fleet control only includes edges in an order which the concerning mobile ro
 >Figure 2 - Graph representation in fleet control and graph transmitted in orders
 
 The nodes and edges are passed as two lists in the `order` message.
-The order of the nodes and edges within those lists also governs the sequence in which the nodes and edges shall be traversed. The `sequenceId` is shared between nodes and edges and defines the sequence of traversal. The first node has a `sequenceId` of 0, the first edge has a `sequenceId` of 1, the second node has a `sequenceId` of 2, etc. An edge with `sequenceId` n connects the nodes with `sequenceId` n-1 and n+1. The `sequenceId` shall be continuous within an order.
+The order of the nodes and edges within those lists also governs the sequence in which the nodes and edges shall be traversed. The `sequenceId` is shared between nodes and edges and defines the sequence of traversal. The first node has a `sequenceId` of 0, the first edge has a `sequenceId` of 1, the second node has a `sequenceId` of 2, etc. An edge with `sequenceId` n connects the nodes with `sequenceId` n-1 and n+1. The `sequenceId` shall be continuous within an order (including its updates).
 
 For a valid order, there shall be at least one node and the number of edges shall be equal to the number of nodes minus one.
 
@@ -815,7 +815,7 @@ Note that multiple maps with different `mapId` can be enabled at the same time. 
 
 ### 6.3.3 Map download
 
-The map download shall be triggered by the `downloadMap` instant action from the fleet control. It shall contain the mandatory parameters `mapId` and `mapDownloadLink` under which the map is stored on the map server and which can be accessed by the mobile robot.
+The map download shall be triggered by the `downloadMap` instant action from the fleet control. It shall contain the mandatory parameters `mapId`, `mapVersion` and `mapDownloadLink` under which the map is stored on the map server and which can be accessed by the mobile robot.
 
 The mobile robot sets the `actionStatus` to 'RUNNING' as soon as it starts downloading the map file. If the download is successful, the `actionStatus` is updated to 'FINISHED'. If the download is unsuccessful, the status is set to 'FAILED'. Once the download has been successfully completed, the map shall be added to the array of `maps` in the state. Maps shall not be reported in the state until they are ready to be enabled.
 
