@@ -1347,7 +1347,9 @@ Fleet control receives requests from the `state` topic and shall answer via the 
 - a decision with one of the values 'GRANTED', 'QUEUED', 'REJECTED', or 'REVOKED', and
 - optionally a `leaseExpiry` timestamp that limits the validity of a 'GRANTED' decision.
 
-If a request is answered with 'QUEUED', fleet control acknowledges reception of the request but does not yet grant permission. The mobile robot shall then continue to wait and shall not perform the requested operation. If a request is answered with 'REJECTED', the mobile robot shall not perform the requested operation and shall remove the corresponding request object from its state.
+If a request is answered with 'QUEUED', fleet control acknowledges reception of the request but does not yet grant permission. The mobile robot shall then continue to wait and shall not perform the requested operation. The requestStatus shall remain 'REQUESTED'.
+
+If a request is answered with 'REJECTED', the mobile robot shall not perform the requested operation and shall remove the corresponding request object from its state.
 
 If a request is answered with 'GRANTED', the mobile robot is allowed to perform the requested operation in accordance with the semantics of the request type. If a `leaseExpiry` is present, the permission shall only be considered valid until this time. Fleet control can extend a lease by sending an updated response with the same `requestId` and a new `leaseExpiry`.
 
