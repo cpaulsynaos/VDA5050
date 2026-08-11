@@ -1340,7 +1340,6 @@ The field `requestStatus` describes the life cycle of the request and shall supp
 - 'GRANTED': The fleet control grants the request.
 - 'REVOKED': Fleet control revokes previously granted request. 
 - 'EXPIRED': request has expired. 
-- 'QUEUED': Acknowledge the mobile robot's request to the fleet control, but no permission is given yet. Request was added to some sort of a queue.
 
 Fleet control receives requests from the `state` topic and shall answer via the `responses` topic containing a response object that includes:
 
