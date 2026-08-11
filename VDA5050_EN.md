@@ -1336,10 +1336,10 @@ Each request shall be represented on the mobile robot by a request object (e.g.,
 
 The field `requestStatus` describes the life cycle of the request and shall support the following values:
 
-- 'REQUESTED': Mobile robot states a request.
-- 'GRANTED': The fleet control grants the request.
-- 'REVOKED': Fleet control revokes previously granted request. 
-- 'EXPIRED': request has expired. 
+- 'REQUESTED': The mobile robot has stated the request and is waiting for a response.
+- 'GRANTED': Fleet control has granted the request.
+- 'REVOKED': Fleet control has revoked the previously granted request.
+- 'EXPIRED': The leaseExpiry of the granted request has passed.
 
 Fleet control receives requests from the `state` topic and shall answer via the `responses` topic containing a response object that includes:
 
