@@ -1005,8 +1005,7 @@ During the connection of a mobile robot client to the broker, a last will topic 
 The disconnection is detected via a heartbeat that is exchanged between the broker and the client.
 Thus, the fleet control can detect a disconnection event by subscribing to the `connection` topic of each mobile robot.
 
-
-As a result, the `timestamp` and `headerId` fields will always be outdated.
+As the last-will message is stored by the broker at the time of connection, the `timestamp` and `headerId` fields will always be outdated.
 
 Mobile robot wants to disconnect gracefully:
 
