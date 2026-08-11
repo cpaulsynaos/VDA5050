@@ -941,7 +941,7 @@ Each response has a `grantType` that is either 'GRANTED', 'QUEUED', 'REVOKED', o
 If the `grantType` is 'GRANTED', the mobile robot is allowed to enter the zone or use the requested trajectory.
 Fleet control can set the `grantType` to 'QUEUED' to acknowledge the mobile robot's request without giving permission, informing the mobile robot that its request is being processed.
 If the `grantType` is 'REJECTED', the mobile robot shall not enter the zone or use the requested trajectory.
-The `grantType` 'REVOKED' indicates that the permission is no longer valid. The fleet control shall assume a 'REVOKED' request as still being 'GRANTED', until the `requestStatus` of the mobile robot is set to 'REVOKED'.
+The `grantType` 'REVOKED' indicates that the permission is no longer valid. The fleet control shall assume a 'REVOKED' request as still being 'GRANTED', until the `requestStatus` of the mobile robot is set to 'REVOKED' or 'EXPIRED', or the request is removed from the mobile robot's state.
 The `response` object can include a `leaseExpiry` which specifies until when a 'GRANTED' request is valid. To extend the `leaseExpiry` fleet control can resend a `responses` message with an updated `leaseExpiry` time.
 
 The mobile robot shall acknowledge the fleet control's response by setting the `requestStatus` accordingly and keep the request for as long as it considers the information relevant. See also Section [6.9 Request/response mechanism](#69-requestresponse-mechanism).
