@@ -468,7 +468,7 @@ For line-guided mobile robots, this could be the next feasible node. A freely na
 If there are actions in the `actionStates` scheduled, these actions shall be cancelled and report 'FAILED' in their `actionState`.
 If there are actions in the `actionStates` running, those actions should be cancelled and also be reported as 'FAILED'.
 If the action cannot be cancelled, the `actionState` of that action should reflect that by reporting 'RUNNING' while it is running, and after that the respective state ('FINISHED', if successful and 'FAILED', if not).
-While there are running actions in the `actionStates`, the `cancelOrder` action shall report 'RUNNING' until all actions are cancelled/finished. Actions that cannot be cancelled (`cancelAllowed` = false) shall be finished.
+While there are running actions in the `actionStates`, the `cancelOrder` action shall report 'RUNNING' until all actions are cancelled/finished. Actions that cannot be cancelled (`cancelAllowed` = false) shall be allowed to complete and then report their actual terminal state ('FINISHED' or 'FAILED').
 After all movement of the mobile robot and all of the actions in the `actionStates` are stopped, the `cancelOrder` action status shall report 'FINISHED'.
 The mobile robot shall then be idle and ready to receive new orders.
 
@@ -760,7 +760,7 @@ waitForTrigger | - | Mobile robot is waiting for the trigger | - | Trigger has b
 trigger | - | - | - | All `waitForTrigger` actions in state 'RUNNING' whose `triggerType` contains 'FLEET_CONTROL' have been released and report 'FINISHED'. | No `waitForTrigger` action in state 'RUNNING' has 'FLEET_CONTROL' in its `triggerType`. | -
 retry | - | Mobile robot is restarting the action defined via `actionId`. | - | The referenced action has left `actionStatus` 'RETRIABLE' and is executed again. The result is reported in the `actionState` of the referenced action. | The action could not be retried, e.g., because no action with this `actionId` exists or the action is not in state 'RETRIABLE'. | -
 skipRetry | - | - | - | The action referenced via the `actionId` has been set to 'FAILED'. | The action could not be skipped, e.g., because no action with this `actionId` exists or the action is not in `actionStatus` 'RETRIABLE'. | -
-cancelOrder | - | Mobile robot is stopping or driving, until it reaches the next node. | - | Mobile robot is not moving. Mobile robot has canceled executing the order and is in idle state. | Mobile robot has no active order.<br>The previous order has already been canceled.<br>Passed `orderId` does not match the currently active `orderId`. | -
+cancelOrder | - | Mobile robot is stopping, or continues driving until it reaches the next node. | - | Mobile robot is not moving. Mobile robot has canceled executing the order and is in idle state. | Mobile robot has no active order.<br>The previous order has already been canceled.<br>Passed `orderId` does not match the currently active `orderId`. | -
 factsheetRequest | - | - | - | The factsheet has been communicated | - | -
 updateCertificate | - | Mobile robot is downloading and installing certificates | - | Certificates have been downloaded, installed and are active. | Download or installation failed. | -
 
@@ -1412,7 +1412,7 @@ Fleet control shall only send optional fields that the mobile robot supports.
 Example: Trajectories are optional.
 If a mobile robot cannot process trajectories, fleet control shall not send a trajectory to the mobile robot.
 
-The mobile robot shall communicate which optional parameters it needs via a mobile robot `factsheet` message.
+The mobile robot shall communicate which optional parameters it supports (and which of them it requires) via its `factsheet` message.
 
 
 ### 7.1.2 Permitted characters and field lengths
@@ -1556,7 +1556,8 @@ Object structure | Unit | Data type | Description
 leftWidth | m | float64 | Range: [0.0 ... float64.max]<br>Defines the width of the corridor in meters to the left related to the trajectory of the mobile robot (see Figure 10).
 rightWidth | m | float64 | Range: [0.0 ... float64.max]<br>Defines the width of the corridor in meters to the right related to the trajectory of the mobile robot (see Figure 10).
 *corridorReferencePoint*| | string | Defines whether the boundaries are valid for the kinematic center or the contour of the mobile robot. If not specified the boundaries are valid to the mobile robot's kinematic center.<br> Enum { 'KINEMATIC_CENTER' , 'CONTOUR' }
-*releaseRequired* | | boolean | Optional flag that indicates whether the robot shall request approval from fleet control.<br>Default: "false".
+*releaseRequired* | | boolean | Optional flag that indicates whether the robot shall request approval from fleet control.<br>"true": before deviating from th
+e edge's trajectory, the mobile robot shall request a release via an `edgeRequest` and shall not deviate until granted.<br>"false": no release request required.<br>Default: "false".
 *releaseLossBehavior* <br> } | | string | Enum { 'STOP' , 'RETURN' }<br>Defines how the robot shall behave in the case of either its release of a corridor expiring or the release being revoked by the fleet control.<br>'STOP': Mobile robot shall stop and await manual intervention. 'RETURN': Mobile robot shall return to the predefined trajectory of the edge it deviated from<br>Default: 'STOP'.
 
 ### 7.3.1 Format of action parameters
@@ -1713,9 +1714,9 @@ driving | | boolean | "true": indicates, that the mobile robot is driving (manua
 ***zoneRequests [zoneRequest]*** | | array | Array of `zoneRequest` objects that are currently active on the mobile robot. <br>Empty array if no zone requests are active.
 ***edgeRequests [edgeRequest]*** | | array | Array of `edgeRequest` objects that are currently active on the mobile robot. <br>Empty array if no edge requests are active.
 *distanceSinceLastNode* | m | float64 | Used by line-guided mobile robots to indicate the distance it has been driving past the `lastNodeId`. <br>Distance in meters.
-**actionStates [actionState]** | | array | Contains an array of all actions from the current order. The action states are kept as long as the order remains active and cleared when accepting a new order. <br>This may include actions from previous nodes, that are still in progress.<br><br>When an action is completed, an updated `state` message is published with `actionStatus` set to 'FINISHED' and if applicable with the corresponding `actionResult`.
-**instantActionStates [actionState]** | | array | An array of all instant action states that the mobile robot received. Instant actions are kept in the `state` message until action `clearInstantActions` is executed. The robot may throw an `errorType` 'INSTANT_ACTION_STATES_FULL' with `errorLevel` 'URGENT' if the list is becoming too long to manage. It is recommended that the fleet control always clears this list as soon as it practically can.
-***zoneActionStates [actionState]*** | | array | An array of all zone action states that are in an end state or are currently running; sharing upcoming actions is optional. Zone action states are kept in the `state` message until action `clearZoneActions` is executed. If action zones are supported, this field is required. The robot may throw an `errorType` 'ZONE_ACTION_STATES_FULL' with `errorLevel` 'URGENT' if the list is becoming too long to manage. It is recommended that the fleet control always clears this list as soon as it practically can.
+**actionStates [actionState]** | | array | Contains action states of all actions from the current order. The action states are kept as long as the order remains active and cleared when accepting a new order. <br>This may include actions from previous nodes, that are still in progress.<br><br>When an action is completed, an updated `state` message is published with `actionStatus` set to 'FINISHED' and if applicable with the corresponding `actionResult`.
+**instantActionStates [actionState]** | | array | Contains states of all instant actions that the mobile robot received. Instant actions are kept in the `state` message until action `clearInstantActions` is executed. The robot may throw an `errorType` 'INSTANT_ACTION_STATES_FULL' with `errorLevel` 'URGENT' if the list is becoming too long to manage. It is recommended that the fleet control always clears this list as soon as it practically can.
+***zoneActionStates [actionState]*** | | array | Contains all zone action states that are in an end state or are currently running; sharing upcoming actions is optional. Zone action states are kept in the `state` message until action `clearZoneActions` is executed. If action zones are supported, this field is required. The robot may throw an `errorType` 'ZONE_ACTION_STATES_FULL' with `errorLevel` 'URGENT' if the list is becoming too long to manage. It is recommended that the fleet control always clears this list as soon as it practically can.
 **powerSupply** | | JSON object | Contains all power-supply related information.
 operatingMode | | string | Enum {'STARTUP', 'AUTOMATIC', 'SEMIAUTOMATIC', 'INTERVENED', 'MANUAL', 'SERVICE', 'TEACH_IN'}<br>For additional information, see Table in Section [6.6.6 Operating Mode](#666-operating-mode).
 **errors [error]** | | array | Array of error objects. <br>All active errors of the mobile robot shall be in the array.<br>An empty array indicates that the mobile robot has no active errors.
@@ -1727,7 +1728,7 @@ Object structure | Unit | Data type | Description
 **map**{ | | JSON object|
 mapId | | string | ID of the map describing a defined area of the mobile robot's workspace.
 mapVersion | | string | Version of the map.
-mapStatus | | string | Enum {'ENABLED', 'DISABLED'}<br>'ENABLED': Indicates this map is currently actively used on the mobile robot. At most one map with the same `mapId` can have its status set to 'ENABLED'.<br>'DISABLED': Indicates this map version is currently not enabled on the mobile robot and thus could be enabled or deleted by request.
+mapStatus | | string | Enum {'ENABLED', 'DISABLED'}<br>'ENABLED': Indicates this map is currently actively used on the mobile robot. At most one map per `mapId` can have its status set to 'ENABLED'.<br>'DISABLED': Indicates this map version is currently not enabled on the mobile robot and thus could be enabled or deleted by request.
 *mapDescriptor* <br>}| | string | A user-defined, human-readable name or descriptor. This shall not be used for logical purposes.
 
 Object structure | Unit | Data type | Description
