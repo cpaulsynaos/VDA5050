@@ -973,7 +973,7 @@ In the following matrix possible interactions between zones are described. The m
 ---|---|---|---|---|---|---|---|---|---|---|---|---
 **BLOCKED**|'BLOCKED'|'BLOCKED'|'BLOCKED'|'BLOCKED'|'BLOCKED'|'BLOCKED'|'BLOCKED'|'BLOCKED'|'BLOCKED'|'BLOCKED'|'BLOCKED'|'BLOCKED'
 **RELEASE**||No Conflict|No Conflict|No Conflict|No Conflict|No Conflict|No Conflict|No Conflict|No Conflict|No Conflict|No Conflict|No Conflict
-**LINE_GUIDED**|||No conflict|'LINE_GUIDED'|No Conflict| (1) |'LINE_GUIDED'|'LINE_GUIDED'|'LINE_GUIDED'|No conflict|'LINE_GUIDED'|No conflict
+**LINE_GUIDED**|||No conflict|'LINE_GUIDED'|No Conflict| (1) |'LINE_GUIDED'|'LINE_GUIDED'|'LINE_GUIDED'|'LINE_GUIDED'|'LINE_GUIDED'|No conflict
 **COORDINATED_REPLANNING**||||(2)|No conflict|(1)|No conflict|No conflict|No conflict|No conflict|'COORDINATED_REPLANNING'|(3)
 **SPEED_LIMIT** |||||(4)|No conflict|No conflict|No conflict|No conflict|No conflict|'SPEED_LIMIT'|(4)
 **ACTION** ||||||(5)|No conflict|No conflict|No conflict|No conflict|'ACTION'|(5)
