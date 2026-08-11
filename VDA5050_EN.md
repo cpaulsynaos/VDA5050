@@ -1884,7 +1884,7 @@ stateOfCharge | % | float64 | Range: [0 ... 100]<br><br>State of charge of the m
 *batteryVoltage* | V | float64 | Battery voltage.
 *batteryCurrent* | A | float64 | Battery current.
 *batteryHealth* | % | int8 | Range: [0 ... 100]<br><br>State describing the battery's health. 
-charging | | boolean | "true": charging in progress.<br>"false": the mobile robot is currently not charging. Shall only be reported as "false" if the robot is available to take orders.
+charging | | boolean | "true": charging in progress.<br>"false": the mobile robot is currently not charging.<br>The mobile robot shall not report "false" before the charging process has been fully terminated.
 *range* <br>}| m | uint32 | Range: [0 ... uint32.max]<br><br>Estimated distance to drive with current state of charge. 
 
 Object structure | Unit | Data type | Description
