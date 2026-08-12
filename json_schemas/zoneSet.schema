@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft/2020-12/schema",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "zoneSet",
     "description": "Zone set detailing a dedicated map.",
     "subtopic": "/zoneSet",
@@ -41,10 +41,10 @@
             "description": "Serial number of the mobile robot."
         },
         "zoneSet":  {
-			"$ref": "#/definitions/zoneSet"
+			"$ref": "#/$defs/zoneSet"
 		}
     },
-    "definitions": {
+    "$defs": {
         "zoneSet": {
             "type": "object",
                 "required": [
@@ -69,7 +69,7 @@
                         "type": "array",
                         "description": "Array of zone objects.",
                         "items": {
-                                "$ref": "#/definitions/zone"
+                                "$ref": "#/$defs/zone"
                         }
                     }
             }
@@ -111,11 +111,29 @@
                     "description": "Array of vertices (in x-y-coordinates) defining the geometrical shape of the zone.",
                     "minItems": 3,
                     "items": {
-                        "$ref": "#/definitions/vertex"
+                        "$ref": "#/$defs/vertex"
                     }
                 }
             },
             "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "zoneType": { "const": "RELEASE" }
+                        }
+                    },
+                    "then": {
+                        "required": ["releaseLossBehavior"],
+                        "properties": {
+                            "releaseLossBehavior": {
+                                "type": "string",
+                                "enum": [
+                                    "STOP", "CONTINUE", "EVACUATE"
+                                ]
+                            }
+                        }
+                    }
+                },
                 {
                     "if": {
                         "properties": {
@@ -149,21 +167,21 @@
                                 "type": "array",
                                 "description": "Array of actions to be executed when entering the zone.",
                                 "items": {
-                                    "$ref": "#/definitions/action"
+                                    "$ref": "#/$defs/zoneAction"
                                 }
                             },
                             "duringActions": {
                                 "type": "array",
                                 "description": "Actions to be executed while crossing the zone. Empty Array, if no Actions required.",
                                 "items": {
-                                    "$ref": "#/definitions/action"
+                                    "$ref": "#/$defs/zoneAction"
                                 }
                             },
                             "exitActions": {
                                 "type": "array",
                                 "description": "Actions to be triggered when leaving the zone. Empty Array, if no Actions required.",
                                 "items": {
-                                    "$ref": "#/definitions/action"
+                                    "$ref": "#/$defs/zoneAction"
                                 }
                             }
                         }
@@ -178,7 +196,7 @@
                     "then": {
                         "required": ["priorityFactor"],
                         "properties": {
-                            "priorityFactor ": {
+                            "priorityFactor": {
                                 "type": "number",
                                 "description": "Relative factor, determining the zone's preference over an area with no zone. 0.0 means no preference, as if there was no zone, 1.0 is maximum preference.",
                                 "minimum": 0.0,
@@ -196,7 +214,7 @@
                     "then": {
                         "required": ["penaltyFactor"],
                         "properties": {
-                            "penaltyFactor ": {
+                            "penaltyFactor": {
                                 "type": "number",
                                 "description": "Relative factor, determining the zone's penalty over an area with no zone. 0.0 means no penalty, as if there was no zone, 1.0 is the maximum penalty, causing the mobile robot to take this path only if no other path is possible.",
                                 "minimum": 0.0,
@@ -214,7 +232,7 @@
                     "then": {
                         "required": [
                             "direction",
-                            "limitation"
+                            "directedLimitation"
                         ],
                         "properties": {
                             "direction": {
@@ -222,7 +240,7 @@
                                 "description": "Preferred direction of travel within the zone in radians. The direction of travel is the speed vector in the project-specific coordinate system.",
                                 "unit": "rad"
                             },
-                            "limitation": {
+                            "directedLimitation": {
                                 "type": "string",
                                 "description": "SOFT: Mobile robots may deviate from the defined direction of travel, but should avoid it, RESTRICTED: The mobile robot may deviate from the defined direction of travel, e.g., for obstacle avoidance, but shall never traverse opposite to the defined direction of travel, STRICT: The mobile robot shall not deviate from the defined direction of travel (within its precision).",
                                 "enum": [
@@ -241,14 +259,14 @@
                     "then": {
                         "required": [
                             "direction",
-                            "limitation"
+                            "bidirectedLimitation"
                         ],
                         "properties": {
                             "direction": {
                                 "type": "number",
                                 "description": "Direction and its opposite direction (+ Pi) define the allowed directions of travel within the zone in radians. The direction of travel is the speed vector in the project-specific coordinate system."
                             },
-                            "limitation": {
+                            "bidirectedLimitation": {
                                 "type": "string",
                                 "description": "SOFT: Mobile robots may deviate from the defined directions of travel, but should avoid it, RESTRICTED: The mobile robot should not traverse in any other direction than the directions of travel, except for obstacle avoidance.",
                                 "enum": [
@@ -279,7 +297,7 @@
                 }
             }
         }, 
-        "action": {
+        "zoneAction": {
             "type": "object",
             "description": "Describes an action that the mobile robot can perform.",
             "required": [
@@ -297,7 +315,7 @@
                 },
                 "blockingType": {
                     "type": "string",
-                    "description": "Regulates if the action is allowed to be executed during movement and/or parallel to other actions.\nnone: action can happen in parallel with others, including movement.\nsoft: action can happen simultaneously with others, but not while moving.\nhard: no other actions can be performed while this action is running.",
+                    "description": "Regulates if the action is allowed to be executed during movement and/or parallel to other actions.\nNONE: action can happen in parallel with others, including movement.\nSINGLE: allows driving but no other actions.\nSOFT: action can happen simultaneously with others, but not while moving.\nHARD: no other actions can be performed while this action is running.",
                     "enum": [
                         "NONE",
                         "SOFT",
@@ -309,8 +327,12 @@
                     "type": "array",
                     "description": "Array of actionParameter-objects for the indicated action e. g. deviceId, loadId, external Triggers.",
                     "items": {
-                        "$ref": "#/definitions/actionParameter"
+                        "$ref": "#/$defs/actionParameter"
                     }
+                },
+                "retriable": {
+                    "type": "boolean",
+                    "description": "True: action can enter RETRIABLE state if it fails. False: action enters FAILED state directly after it fails. Default: false."
                 }
             }
         },

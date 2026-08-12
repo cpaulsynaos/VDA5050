@@ -51,7 +51,7 @@
             "type": "object",
             "required": [
                 "seriesName",
-                "mobileRobotKinematic",
+                "mobileRobotKinematics",
                 "mobileRobotClass",
                 "maximumLoadMass",
                 "localizationTypes",
@@ -170,22 +170,22 @@
                 "minimumHeight": {
                     "type": "number",
                     "description": "Minimum height of mobile robot",
-                    "unit": "m",
+                    "unit": "m"
                 },
                 "maximumHeight": {
                     "type": "number",
                     "description": "Maximum height of mobile robot",
-                    "unit": "m",
+                    "unit": "m"
                 },
                 "width": {
                     "type": "number",
                     "description": "Width of the mobile robot",
-                    "unit": "m",
+                    "unit": "m"
                 },
                 "length": {
                     "type": "number",
                     "description": "Length of the mobile robot",
-                    "unit": "m",
+                    "unit": "m"
                 }
             }
         },
@@ -209,17 +209,17 @@
                         },
                         "maximumTopicSerialLength": {
                             "type": "integer",
-                            "description": "Maximum length of serial-number part in MQTT-topics. Affected Parameters: order.serialNumber, instantActions.serialNumber, state.SerialNumber, visualization.serialNumber, connection.serialNumber",
+                            "description": "Maximum length of serial-number part in MQTT-topics. Affected Parameters: order.serialNumber, instantActions.serialNumber, state.serialNumber, visualization.serialNumber, connection.serialNumber, zoneSet.serialNumber, response.serialNumber",
 							"minimum": 0
                         },
                         "maximumTopicElementLength": {
                             "type": "integer",
-                            "description": "Maximum length of all other parts in MQTT-topics. Affected parameters: order.timestamp, order.version, order.manufacturer, instantActions.timestamp, instantActions.version, instantActions.manufacturer, state.timestamp, state.version, state.manufacturer, visualization.timestamp, visualization.version, visualization.manufacturer, connection.timestamp, connection.version, connection.manufacturer",
+                            "description": "Maximum length of all other parts in MQTT-topics. Affected parameters: order.timestamp, order.version, order.manufacturer, instantActions.timestamp, instantActions.version, instantActions.manufacturer, state.timestamp, state.version, state.manufacturer, visualization.timestamp, visualization.version, visualization.manufacturer, connection.timestamp, connection.version, connection.manufacturer, zoneSet.timestamp, zoneSet.version, zoneSet.manufacturer, response.timestamp, response.version, response.manufacturer",
 							"minimum": 0
                         },
                         "maximumIdLength": {
                             "type": "integer",
-                            "description": "Maximum length of ID-Strings. Affected parameters: order.orderId, node.nodeId, nodePosition.mapId, action.actionId, edge.edgeId",
+                            "description": "Maximum length of ID-Strings. Affected parameters: order.orderId, node.nodeId, nodePosition.mapId, action.actionId, edge.edgeId, map.mapId, zoneSet.zoneSetId, zone.zoneId, zoneRequest.requestId, edgeRequest.requestId",
 							"minimum": 0
                         },
                         "idNumericalOnly": {
@@ -442,7 +442,7 @@
                             },
                             "actionParameters": {
                                 "type": "array",
-                                "description": "Kist of parameters. if not defined, the action has no parameters",
+                                "description": "List of parameters. if not defined, the action has no parameters",
                                 "items": {
                                     "type": "object",
                                     "required": [
@@ -495,11 +495,11 @@
                                 }
                             },
                             "pauseAllowed": {
-                                "type": "string",
+                                "type": "boolean",
                                 "description": "True: action can be paused via startPause. False: action cannot be paused."
                             },
                             "cancelAllowed": {
-                                "type": "string",
+                                "type": "boolean",
                                 "description": "True: action can be cancelled via cancelOrder. False: action cannot be cancelled."
                             }
                         }
@@ -598,7 +598,7 @@
                             },
                             "vertices": {
                                 "type": "array",
-                                "description": "The envelope curve in defined as a polygon. It shall be assumed as closed. Only simple polygons shall be used.",
+                                "description": "The envelope curve is defined as a polygon. It shall be assumed as closed. Only simple polygons shall be used.",
                                 "items": {
                                     "type": "object",
                                     "required": [
@@ -613,7 +613,7 @@
                                         },
                                         "y": {
                                             "type": "number",
-                                            "description": " Y-position of polygon-point",
+                                            "description": "Y-position of polygon-point",
                                             "unit": "m"
                                         }
                                     }
@@ -667,7 +667,7 @@
             "properties": {
                 "loadPositions": {
                     "type": "array",
-                    "description": "List of load positions / load handling devices. This lists contains the valid values for the parameter “state.loads[].loadPosition” and for the action parameter “lhd” of the actions pick and drop. If this list doesn’t exist or is empty, the mobile robot has no load handling device.",
+                    "description": "List of load positions / load handling devices. This lists contains the valid values for the parameter “state.loads[].loadPosition” and for the action parameter “loadHandlingDevice” of the actions pick and drop. If this list doesn’t exist or is empty, the mobile robot has no load handling device.",
                     "items": {
                         "type": "string"
                     }
@@ -785,7 +785,7 @@
                             },
                             "maximumSpeed": {
                                 "type": "number",
-                                "unit": "m/s^2",
+                                "unit": "m/s",
                                 "description": "Maximum allowed speed for this load-type and –weight",
 								"minimum": 0.0
                             },
@@ -888,7 +888,7 @@
                         }
                     }
                 },
-                "batteryCharging ": {
+                "batteryCharging": {
                     "type": "object",
                     "description": "Information about battery charging parameters.",
                     "properties": {
@@ -911,10 +911,10 @@
                             "maximum": 100.0
                         },
                         "minimumChargingTime": {
-                            "type": "number",
+                            "type": "integer",
                             "description": "Specifies the desired minimum charging time in seconds.",
                             "unit": "s",
-							"minimum": 0.0
+							"minimum": 0
                         }
                     }
                 }

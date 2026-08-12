@@ -4,15 +4,9 @@ This markdown file is the original UML diagram from which process_order_update.p
 @startuml
 skinparam dpi 250
 start
-<<<<<<< dev/V3.0.0
 :Mobile robot receives order via MQTT;
 #lightgreen:validate JSON;
 if ((1) Is received order valid?) then (no)
-=======
-#lightgreen:Order arrives via MQTT;
-#lightgreen:Validate JSON;
-if ((1) is received order valid?) then (no)
->>>>>>> main
     #orange:reject order
     throw error;
     stop
@@ -35,7 +29,7 @@ endif
             endif
             ->yes;
                 #lightgreen:delete states of previous order;
-                #lightgreen:- accept order\n- set orderId and orderUpdateId\n- populate states of new order (9);
+                #lightgreen:- accept order\n- set orderId and orderUpdateId\n- populate states of new order (11);
           #lightgreen: execute order;
      else (no - received order is update of current order)
         if ((6) Is received order update deprecated?) then (yes)
