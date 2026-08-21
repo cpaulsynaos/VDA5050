@@ -435,7 +435,7 @@ Figure 8 describes the process of accepting an order or order update.
 
 2) **Is received order new or an update of the current order?**: Is `orderId` of the received order different to `orderId` of the order the mobile robot currently holds?
 
-3) **Is mobile robot idle and not waiting for an update?**: Is the mobile robot in an idle state according to [6.6.8 Idle state of the mobile robot](#668-idle-state-of-the-mobile-robot) and not waiting for an update? Note that the nodes, edges, and corresponding action states of the order horizon are also included in the state. A mobile robot that has finished executing its base but still has a horizon is therefore not idle — it is waiting for an order update.
+3) **Is mobile robot idle and not waiting for an update?**: Is the mobile robot in an idle state according to [6.6.8 Idle state of the mobile robot](#668-idle-state-of-the-mobile-robot) and not waiting for an update? Note that the nodes, edges, and corresponding action states of the order horizon are also included in the state. A mobile robot that has finished executing its base but still has a horizon is therefore not idle, but is waiting for an order update.
 
 4) **Is OrderUpdateId 0?**: Is the `orderUpdateId` of the new order 0?
 
