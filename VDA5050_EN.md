@@ -1537,7 +1537,7 @@ released | | boolean | "true" indicates that the edge is part of the base.<br>"f
 Object structure | Unit | Data type | Description
 ---|---|---|---
 **trajectory** { | | JSON object |
-*degree* | | uint32 | Degree of the NURBS curve defining the trajectory.<br><br>Range: [1 ... uint32.max]<br>Default: 1
+*degree* | | uint32 | Degree of the NURBS curve defining the trajectory.<br><br>Range: [1 ... uint32.maximum]<br>Default: 1
 ***knotVector [float64]*** | | array | Array of knot values of the NURBS.<br>The size of `knotVector` is exactly `degree` + 1 larger than the size of `controlPoints`.<br>The multiplicities of the first and last knot, both, must be `degree` + 1 (clamped NURBS).<br>The multiplicity of knots other than the first or last knot must not be greater than `degree` (continuity).<br><br>Range of knots: [0.0 ... 1.0]<br>Default: Equidistant knots from 0.0 to 1.0 with a multiplicity of `degree` + 1 for the first and last knot, and multiplicity 1 for all other knots (uniform knots).
 **controlPoints [controlPoint]** | | array | Array of `controlPoint` objects defining the control points of the NURBS, explicitly including the start and end point (clamped NURBS).<br>The number of control points needs to be at least `degree` + 1.
 } | | |
@@ -1547,14 +1547,14 @@ Object structure | Unit | Data type | Description
 **controlPoint** { | | JSON object |
 x | m | float64 | X-coordinate described in the project-specific coordinate system.
 y | m | float64 | Y-coordinate described in the project-specific coordinate system.
-*weight* | | float64 | The weight of the control point on the curve.<br><br>Range: ]0.0 ... float64.max]<br>Default: 1.0
+*weight* | | float64 | The weight of the control point on the curve.<br><br>Range: ]0.0 ... float64.maximum]<br>Default: 1.0
 } | | |
 
 Object structure | Unit | Data type | Description
 ---|---|---|---
 ***corridor*** { | | JSON object |
-leftWidth | m | float64 | Range: [0.0 ... float64.max]<br>Defines the width of the corridor in meters to the left related to the trajectory of the mobile robot (see Figure 10).
-rightWidth | m | float64 | Range: [0.0 ... float64.max]<br>Defines the width of the corridor in meters to the right related to the trajectory of the mobile robot (see Figure 10).
+leftWidth | m | float64 | Range: [0.0 ... float64.maximum]<br>Defines the width of the corridor in meters to the left related to the trajectory of the mobile robot (see Figure 10).
+rightWidth | m | float64 | Range: [0.0 ... float64.maximum]<br>Defines the width of the corridor in meters to the right related to the trajectory of the mobile robot (see Figure 10).
 *corridorReferencePoint*| | string | Defines whether the boundaries are valid for the kinematic center or the contour of the mobile robot. If not specified the boundaries are valid to the mobile robot's kinematic center.<br> Enum { 'KINEMATIC_CENTER' , 'CONTOUR' }
 *releaseRequired* | | boolean | Optional flag that indicates whether the robot shall request approval from fleet control.<br>Default: "false".
 *releaseLossBehavior* <br> } | | string | Enum { 'STOP' , 'RETURN' }<br>Defines how the robot shall behave in the case of either its release of a corridor expiring or the release being revoked by the fleet control.<br>'STOP': Mobile robot shall stop and await manual intervention. 'RETURN': Mobile robot shall return to the predefined trajectory of the edge it deviated from<br>Default: 'STOP'.
@@ -1774,7 +1774,7 @@ Object structure | Unit | Data type | Description
 Object structure | Unit | Data type | Description
  ---|---|---|---
  **trajectory** { | | JSON object |
- *degree* | | uint32 | Degree of the NURBS curve defining the trajectory.<br><br>Range: [1 ... uint32.max]<br>Default: 1
+ *degree* | | uint32 | Degree of the NURBS curve defining the trajectory.<br><br>Range: [1 ... uint32.maximum]<br>Default: 1
  ***knotVector [float64]*** | | array | Array of knot values of the NURBS.<br>The size of `knotVector` is exactly `degree` + 1 larger than the size of `controlPoints`.<br>The multiplicities of the first and last knot, both, must be `degree` + 1 (clamped NURBS).<br>The multiplicity of knots other than the first or last knot must not be greater than `degree` (continuity).<br><br>Range of knots: [0.0 ... 1.0]<br>Default: Equidistant knots from 0.0 to 1.0 with a multiplicity of `degree` + 1 for the first and last knot, and multiplicity 1 for all other knots (uniform knots).
  **controlPoints [controlPoint]** | | array | Array of `controlPoint` objects defining the control points of the NURBS, explicitly including the start and end point (clamped NURBS).<br>The number of control points needs to be at least `degree` + 1.
  } | | |
@@ -1784,7 +1784,7 @@ Object structure | Unit | Data type | Description
 **controlPoint** { | | JSON object |
 x | m | float64 | X-coordinate described in the project-specific coordinate system.
 y | m | float64 | Y-coordinate described in the project-specific coordinate system.
-*weight* | | float64 | The weight of the control point on the curve.<br><br>Range: ]0.0 ... float64.max]<br>Default: 1.0
+*weight* | | float64 | The weight of the control point on the curve.<br><br>Range: ]0.0 ... float64.maximum]<br>Default: 1.0
 } | | |
 
 
@@ -1831,7 +1831,7 @@ Object structure | Unit | Data type | Description
 *loadPosition* | | string | Indicates, which load handling/carrying unit of the mobile robot is used, e.g., in case the mobile robot has multiple spots/positions to carry loads.<br><br>For example: "front", "back", "positionC1", etc.<br><br>Optional for mobile robots with only one `loadPosition`
 ***boundingBoxReference*** | | JSON object | Point of reference for the location of the bounding box. <br>The point of reference is always the center of the bounding box's bottom surface (at height = 0) and is described in coordinates of the mobile robot's coordinate system.
 ***loadDimensions*** | | JSON object | Dimensions of the load's bounding box in meters.
-*weight*<br>} | kg | float64 | Range: [0.0 ... float64.max]<br><br>Absolute weight of the load measured in kg.
+*weight*<br>} | kg | float64 | Range: [0.0 ... float64.maximum]<br><br>Absolute weight of the load measured in kg.
 
 Object structure | Unit | Data type | Description
 ---|---|---|---
@@ -1886,7 +1886,7 @@ stateOfCharge | % | float64 | Range: [0 ... 100]<br><br>State of charge of the m
 *batteryCurrent* | A | float64 | Battery current.
 *batteryHealth* | % | int8 | Range: [0 ... 100]<br><br>State describing the battery's health. 
 charging | | boolean | "true": charging in progress.<br>"false": the mobile robot is currently not charging. Shall only be reported as "false" if the robot is available to take orders.
-*range* <br>}| m | uint32 | Range: [0 ... uint32.max]<br><br>Estimated distance to drive with current state of charge. 
+*range* <br>}| m | uint32 | Range: [0 ... uint32.maximum]<br><br>Estimated distance to drive with current state of charge. 
 
 Object structure | Unit | Data type | Description
 ---|---|---|---
