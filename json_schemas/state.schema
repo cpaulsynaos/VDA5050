@@ -161,7 +161,7 @@
         },
         "distanceSinceLastNode": {
             "type": "number",
-            "description": "Used by line guided vehicles to indicate the distance it has been driving past the lastNodeId. Distance is in meters."
+            "description": "Used by line guided mobile robots to indicate the distance it has been driving past the lastNodeId. Distance is in meters."
         },
         "actionStates": {
             "type": "array",
@@ -512,7 +512,7 @@
                 },
                 "deviationRange": {
                     "type": "number",
-                    "description": "Value for position deviation range in meters. Optional for vehicles that cannot estimate their deviation, e.g., grid-based localization. Only for logging and visualization purposes.",
+                    "description": "Value for position deviation range in meters. Optional for mobile robots that cannot estimate their deviation, e.g., grid-based localization. Only for logging and visualization purposes.",
                     "unit": "m",
                     "minimum": 0.0
                 }
@@ -534,7 +534,7 @@
 				},
 				"loadPosition": {
 					"type": "string",
-					"description": "Indicates, which load handling/carrying unit of the mobile robot is used, e.g., in case the mobile robot has multiple spots/positions to carry loads. Optional for vehicles with only one loadPosition.",
+					"description": "Indicates, which load handling/carrying unit of the mobile robot is used, e.g., in case the mobile robot has multiple spots/positions to carry loads. Optional for mobile robots with only one loadPosition.",
 					"examples":[
 						"front", "back", "positionC1"
 					]
@@ -630,7 +630,7 @@
 				"requestStatus": {
 					"type": "string",
 					"enum": ["REQUESTED", "GRANTED", "REVOKED", "EXPIRED"],
-					"description": "When stating a request, this is set to REQUESTED. After response or update from fleet control set to GRANTED or REVOKED. If lease time expires, shall be to EXPIRED."
+					"description": "When stating a request, this is set to REQUESTED. After response or update from fleet control set to GRANTED or REVOKED. If lease time expires, shall be set to EXPIRED."
 				},
 				"trajectory": {
 					"$ref": "#/$defs/trajectory"
@@ -720,7 +720,7 @@
                 "stateOfCharge",
                 "charging"
             ],
-            "description": "Contains all battery-related information.",
+            "description": "Contains all battery related information.",
             "properties": {
                 "stateOfCharge": {
                     "type": "number",
