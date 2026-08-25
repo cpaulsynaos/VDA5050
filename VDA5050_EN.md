@@ -2174,4 +2174,4 @@ ISO 3691-4 | December 2023 | Industrial Trucks Safety Requirements and Verificat
 ISO 9787 | May 2013 | Robots and robotic devices: Coordinate systems and motion nomenclatures
 ISO 639 |November 2023 | Language code for the representation of the world's languages and language groups
 ISO 8601  | February 2019 | Date and time: Representations for information interchange
-LIF – Layout Interchange Format| March 2024 | Definition of a format of track layouts for exchange between the integrator of the driverless transport mobile robots and a (third-party) fleet control system.
+LIF – Layout Interchange Format| March 2024 | Definition of a format of track layouts for exchange between the integrator of the driverless transport vehicles and a (third-party) fleet control system.
