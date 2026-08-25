@@ -14,9 +14,9 @@
     "type": "object",
     "properties": {
         "headerId": {
-            "title": "headerId",
             "type": "integer",
-            "description": "headerId of the message. The headerId is defined per topic and incremented by 1 with each sent (but not necessarily received) message."
+            "description": "Header ID of the message. The headerId is defined per topic and incremented by 1 with each sent (but not necessarily received) message.",
+            "minimum": 0
         },
         "timestamp": {
             "title": "timestamp",
