@@ -655,7 +655,7 @@
 				"requestType": {
 					"type": "string",
 					"enum": ["CORRIDOR"],
-					"description": "Enum specifying the type of edge the request relates to."
+					"description": "Enum specifying the type of request. Set to 'CORRIDOR' if requesting to deviate from the predefined trajectory within the defined work space."
 				},
 				"edgeId": {
 					"type": "string",
