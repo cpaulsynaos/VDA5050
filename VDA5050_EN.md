@@ -1836,8 +1836,6 @@ Object structure | Unit | Data type | Description
 Object structure | Unit | Data type | Description
 ---|---|---|---
 **boundingBoxReference** { | | JSON object | Point of reference for the location of the bounding box. <br>The point of reference is always the center of the bounding box's bottom surface (at height = 0) and is described in coordinates of the mobile robot's coordinate system.
-x | | float64 | X-coordinate of the point of reference.
-y | | float64 | Y-coordinate of the point of reference.
 x | m | float64 | X-coordinate of the point of reference.
 y | m | float64 | Y-coordinate of the point of reference.
 z | m | float64 | Z-coordinate of the point of reference.
