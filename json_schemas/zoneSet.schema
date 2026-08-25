@@ -123,7 +123,6 @@
                         }
                     },
                     "then": {
-                        "required": ["releaseLossBehavior"],
                         "properties": {
                             "releaseLossBehavior": {
                                 "type": "string",
