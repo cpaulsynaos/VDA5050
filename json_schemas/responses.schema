@@ -21,7 +21,10 @@
         "timestamp": {
             "type": "string",
             "format": "date-time",
-            "description": "Timestamp (ISO 8601, UTC); YYYY-MM-DDTHH:mm:ss.fffZ (e.g., '2017-04-15T11:40:03.123Z')."
+            "description": "Timestamp in ISO8601 format (YYYY-MM-DDTHH:mm:ss.fffZ).",
+            "examples": [
+                "2017-04-15T11:40:03.123Z"
+            ]
         },
         "version": {
             "type": "string",
