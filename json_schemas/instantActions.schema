@@ -56,7 +56,7 @@
                 "properties": {
                     "actionType": {
                         "type": "string",
-                        "description": "Name of action. Identifies the function of the action."
+                        "description": "Type of the action. Identifies the function of the action."
                     },
                     "actionId": {
                         "type": "string",
